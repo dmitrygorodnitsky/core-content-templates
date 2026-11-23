@@ -40,7 +40,6 @@ public final class OnboardingReadinessTest {
                 "agreementType", type(17, field("CLIENT", "com.pixelnation.account.domain.Account", null, "entityTypes", List.of(2)), field("ORDERS", "com.pixelnation.bill.domain.Order", null, "entityTypes", List.of(5, 6))),
                 "serviceOrderType", type(6, field("SERVICE_PROPERTY", "com.pixelnation.rm.domain.Resource", null, "entityTypes", List.of(154))),
                 "ledgerAccountType", type(3),
-                "seasonSettingsType", type(35, field("SEASON_START", "java.time.LocalDate", null), field("SEASON_END", "java.time.LocalDate", null)),
                 "referenceScripts", m("quoteDelivery", m("status", "AVAILABLE"), "quoteConfirmation", m("status", "AVAILABLE")),
                 "adminRole", m("status", "AVAILABLE", "code", "ADMIN", "ownerCode", "SYSTEM", "hasExplicitSystemAdminPermission", false), "adminLoginExists", false, "seasonStartAvailable", false, "errors", List.of());
     }
@@ -71,7 +70,7 @@ public final class OnboardingReadinessTest {
         check(List.of(m("reference", "serviceOrder")).equals(map(map(agreementStep.get("proposed")).get("attributes")).get("ORDERS")), "Use the separate service Order, never the subscription purchase");
         check(!has(report, "administrator", "PLATFORM_ADMIN_ROLE_FORBIDDEN", "role") && !has(report, "administrator", "ADMIN_ROLE_SCOPE_UNVERIFIED", "role"), "SYSTEM defines ADMIN but assignment is to the client organization");
         check(((List<?>) report.get("steps")).stream().map(OnboardingReadinessTest::map).anyMatch(s -> "ledger".equals(s.get("step")) && "Account".equals(s.get("entity")) && "ORGANIZATION".equals(map(s.get("type")).get("code"))), "Ledger is the native ORGANIZATION Account");
-        check(has(report, "seasonSettings", "SEASON_SETTINGS_REQUIRED", "CONTRACT_SETTINGS.SEASON_START"), "Season source required for the chosen expiry policy");
+        check(has(report, "seasonSettings", "SEASON_SETTINGS_REQUIRED", "metadata.CONTRACT_SETTINGS.SEASON_START"), "Season source required for the chosen expiry policy");
         check(has(report, "entitlements", "CAPACITY_MAXIMUM_UNVERIFIED", "ACTIVE_PROPERTIES_MAXIMUM"), "An unchecked overall plan maximum must remain visible");
         check(!has(report, "entitlements", "ENTITLEMENT_CONTRACT_REQUIRED", "enforcement"), "Accept the agreed native backend contract without claiming runtime execution");
         check(has(report, "quotation", "QUOTE_EXPIRY_IMPLEMENTATION_REQUIRED", "quoteLinkPolicy"), "The existing max(now+days, seasonStart) rule must not be reported as the chosen rule");
@@ -138,7 +137,7 @@ public final class OnboardingReadinessTest {
         check(((List<?>) report.get("steps")).stream().map(OnboardingReadinessTest::map).noneMatch(row -> Boolean.TRUE.equals(row.get("sourceReady"))), "Model read errors prevent individual ready claims");
         purchase = purchase(); model = model(); config = config();
         map(model.get("organizationDefaults")).put("QUOTATION_EXPIRATION", "2027-01-01");
-        model.put("seasonStartAvailable", true); model.put("seasonSettings", m("status", "CONFIGURED", "typeCode", "CONTRACT_AWARE", "source", "TEMPORARY_CA_CONFIG",
+        model.put("seasonStartAvailable", true); model.put("seasonSettings", m("status", "CONFIGURED", "source", "TEMPORARY_CA_CONFIG",
                 "countryCode", "CA", "seasonStart", "2026-11-01", "seasonEnd", "2027-03-31"));
         map(config.get("quoteLinkPolicy")).put("implementationStatus", "READY");
         model.put("quoteExpiryPolicy", m("status", "READY", "sourceFingerprintsVerified", true));
@@ -151,15 +150,31 @@ public final class OnboardingReadinessTest {
         map(model.get("organizationDefaults")).remove("QUOTATION_EXPIRATION");
         report = OnboardingReadiness.evaluate(purchase, model, config);
         check(Boolean.TRUE.equals(report.get("configurationReady")), "An optional legacy date must not require a guessed organization value");
+        model.put("contractReadiness", m("status", "NOT_READY", "reason", "MISSING_TERMS_CODE"));
+        report = OnboardingReadiness.evaluate(purchase, model, config);
+        check(Boolean.TRUE.equals(report.get("configurationReady")) && "MISSING_TERMS_CODE".equals(map(report.get("contractReadiness")).get("reason")),
+                "Onboarding remains available while agreement delivery separately reports missing terms");
         Map<String, Object> seasonStep = ((List<?>) report.get("steps")).stream().map(OnboardingReadinessTest::map).filter(s -> "seasonSettings".equals(s.get("step"))).findFirst().orElseThrow();
-        check(Boolean.FALSE.equals(map(seasonStep.get("proposed")).get("existingEntityAvailable")) && Boolean.FALSE.equals(seasonStep.get("creationEnabled")), "Configured dates do not claim an existing Dictionary or create it");
+        check("OrganizationMetadata".equals(seasonStep.get("entity")) && m("SEASON_START", "2026-11-01", "SEASON_END", "2027-03-31")
+                .equals(map(seasonStep.get("proposed")).get("metadata")), "The planned season is organization metadata with no Dictionary or duplicated legal name");
+        Map<String, Object> seasonSource = map(model.get("seasonSettings"));
+        seasonSource.put("source", "ANCESTOR_METADATA"); seasonSource.put("termsCode", "TERMS_CA");
+        model.put("contractReadiness", m("status", "NOT_READY", "reason", "TERMS_TRANSLATION_MISSING", "language", "en"));
+        report = OnboardingReadiness.evaluate(purchase, model, config);
+        check("TERMS_TRANSLATION_MISSING".equals(map(report.get("contractReadiness")).get("reason")), "A terms code alone never makes the contract ready");
+        model.put("contractReadiness", m("status", "READY", "documentCode", "TERMS_CA", "language", "en"));
+        report = OnboardingReadiness.evaluate(purchase, model, config);
+        check("READY".equals(map(report.get("contractReadiness")).get("status")), "Verified terms and translation make the contract ready independently");
+        seasonStep = ((List<?>) report.get("steps")).stream().map(OnboardingReadinessTest::map).filter(s -> "seasonSettings".equals(s.get("step"))).findFirst().orElseThrow();
+        check("TERMS_CA".equals(map(map(seasonStep.get("proposed")).get("metadata")).get("CONTRACT_TERMS_CODE")), "An explicit inherited terms code travels with the dates");
+        seasonSource.put("source", "TEMPORARY_CA_CONFIG"); seasonSource.remove("termsCode");
         map(model.get("seasonSettings")).put("seasonEnd", "2026-10-01");
-        check(has(OnboardingReadiness.evaluate(purchase, model, config), "seasonSettings", "SEASON_SETTINGS_REQUIRED", "CONTRACT_SETTINGS.SEASON_START"), "A reversed season is rejected");
+        check(has(OnboardingReadiness.evaluate(purchase, model, config), "seasonSettings", "SEASON_SETTINGS_REQUIRED", "metadata.CONTRACT_SETTINGS.SEASON_START"), "A reversed season is rejected");
         map(model.get("seasonSettings")).put("seasonEnd", "not-a-date");
-        check(has(OnboardingReadiness.evaluate(purchase, model, config), "seasonSettings", "SEASON_SETTINGS_REQUIRED", "CONTRACT_SETTINGS.SEASON_START"), "An invalid season date is rejected");
+        check(has(OnboardingReadiness.evaluate(purchase, model, config), "seasonSettings", "SEASON_SETTINGS_REQUIRED", "metadata.CONTRACT_SETTINGS.SEASON_START"), "An invalid season date is rejected");
         map(model.get("seasonSettings")).put("seasonEnd", "2027-03-31");
         map(model.get("seasonSettings")).put("countryCode", "US");
-        check(has(OnboardingReadiness.evaluate(purchase, model, config), "seasonSettings", "SEASON_SETTINGS_REQUIRED", "CONTRACT_SETTINGS.SEASON_START"), "The CA default cannot silently become a US default");
+        check(has(OnboardingReadiness.evaluate(purchase, model, config), "seasonSettings", "SEASON_SETTINGS_REQUIRED", "metadata.CONTRACT_SETTINGS.SEASON_START"), "The CA default cannot silently become a US default");
         map(model.get("seasonSettings")).put("countryCode", "CA");
         map(model.get("quoteExpiryPolicy")).put("sourceFingerprintsVerified", false);
         check(has(OnboardingReadiness.evaluate(purchase, model, config), "quotation", "QUOTE_EXPIRY_IMPLEMENTATION_REQUIRED", "quoteLinkPolicy"), "A READY configuration flag alone cannot approve unverified remote Quote sources");

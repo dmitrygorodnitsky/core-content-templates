@@ -108,12 +108,32 @@ Entitlements configuration and its activation guards are not changed. A missing
 structured overall Properties maximum in the saved purchase remains a data
 blocker, distinct from backend capability.
 
-Season dates now have the user-approved temporary CA default in config.json:
-2026-11-01 through 2027-03-31. A proposed seasonSettings step describes a new
-company-owned CONTRACT_AWARE Dictionary and the subsequent CONTRACT_SETTINGS
-attachment. It does not fabricate an existing Dictionary ID. The agreement's
-proposed TERM_START_DATE / TERM_END_DATE use the same dates. No Dictionary or
-organization is saved by inspection.
+The default CA season in `config.json` runs from 2026-11-01 through 2027-03-31.
+Onboarding saves the dates once in `Organization.metadata.CONTRACT_SETTINGS`
+when it creates the company. It can take the dates and an explicitly configured
+terms code from an ancestor's metadata. An existing ancestor Dictionary can
+still supply dates during the transition. The starter agreement stores the
+dates in `TERM_START_DATE` and `TERM_END_DATE`.
+
+The contract source in `core-ui` consumes the same metadata object. It reads
+`SEASON_START`, `SEASON_END` and `CONTRACT_TERMS_CODE`. It resolves the terms
+document by code within the provider's hierarchy and reads the provider's name
+from `Organization.nls`. Until an existing organization has contract metadata,
+the resolver reads its existing Dictionary for dates and terms. An organization
+with dates alone can finish onboarding. `contractReadiness` reports separately
+whether the contract dates, terms document and non-empty translation in the
+default language are available. Preparing its contract terms requires the
+workflow to set a usable document code. Workflows can update the dates for
+future agreements. Previously populated agreement dates stay recorded.
+
+For LSRC, load the terms document and its localized text first. Then populate
+`Organization.metadata.CONTRACT_SETTINGS` using the dates and the target
+document code, and verify the agreement snapshot. Set the full provider name in
+the organization card before enabling the new reader. Keep the legacy Dictionary
+until the organization and any older onboarding receipts have been verified.
+Frozen purchase receipts retain their original plan and digest. The write guard
+accepts the two retired season storage selectors on legacy receipts and still
+checks the rest of the frozen configuration.
 
 Onboarding now selects SERVICE_PROVIDER by code. Its inherited attribute contract
 matches the retired OPERATOR type, and QUOTATION_EXPIRATION is already optional.

@@ -43,14 +43,13 @@ public final class OnboardingReadiness {
         required(organization, organizationValues, "organization", blockers);
         steps.add(step("organization", "Organization", organization, Map.of("parent", parent, "name", text(purchase.get("companyName")), "attributes", organizationValues)));
 
-        Map<String, Object> season = map(model.get("seasonSettings")), seasonType = map(model.get("seasonSettingsType"));
-        if (!seasonSourceReady(model)) block(blockers, "seasonSettings", "SEASON_SETTINGS_REQUIRED", "CONTRACT_SETTINGS.SEASON_START", "Нужен проверенный источник дат начала и конца сезона для будущего профиля CONTRACT_AWARE.");
+        Map<String, Object> season = map(model.get("seasonSettings"));
+        if (!seasonSourceReady(model)) block(blockers, "seasonSettings", "SEASON_SETTINGS_REQUIRED", "metadata.CONTRACT_SETTINGS.SEASON_START", "Нужен проверенный источник дат начала и конца сезона.");
         Map<String, Object> seasonValues = new LinkedHashMap<>();
-        seasonValues.put("LEGAL_NAME", text(purchase.get("companyName")));
         seasonValues.put("SEASON_START", text(season.get("seasonStart"))); seasonValues.put("SEASON_END", text(season.get("seasonEnd")));
-        required(seasonType, seasonValues, "seasonSettings", blockers);
-        steps.add(step("seasonSettings", "Dictionary", seasonType, Map.of("organization", Map.of("reference", "organization"),
-                "attributes", seasonValues, "source", season, "attachToOrganizationAttribute", "CONTRACT_SETTINGS", "existingEntityAvailable", false)));
+        if (present(season.get("termsCode"))) seasonValues.put("CONTRACT_TERMS_CODE", season.get("termsCode"));
+        steps.add(step("seasonSettings", "OrganizationMetadata", Map.of(), Map.of("organization", Map.of("reference", "organization"),
+                "metadata", seasonValues, "source", season)));
 
         Map<String, Object> role = map(model.get("adminRole"));
         if (!"AVAILABLE".equals(role.get("status"))) block(blockers, "administrator", "ADMIN_ROLE_UNAVAILABLE", "role", "Не найдена однозначная роль администратора компании.");
@@ -145,15 +144,9 @@ public final class OnboardingReadiness {
     }
 
     private static boolean seasonSourceReady(Map<String, Object> model) {
-        Map<String, Object> season = map(model.get("seasonSettings")), definition = map(model.get("seasonSettingsType"));
+        Map<String, Object> season = map(model.get("seasonSettings"));
         if (!Boolean.TRUE.equals(model.get("seasonStartAvailable")) || !Set.of("AVAILABLE", "CONFIGURED").contains(text(season.get("status")))
-                || !"CONTRACT_AWARE".equals(season.get("typeCode")) || !"AVAILABLE".equals(definition.get("status"))
-                || !"CONTRACT_AWARE".equals(definition.get("code")) || !Set.of("TEMPORARY_CA_CONFIG", "ANCESTOR_PROFILE").contains(text(season.get("source")))) return false;
-        for (String code : List.of("SEASON_START", "SEASON_END")) {
-            if (list(definition.get("attributes")).stream().map(OnboardingReadiness::map).noneMatch(field -> code.equals(field.get("code")) && "java.time.LocalDate".equals(field.get("className")))) return false;
-        }
-        Map<String, Object> owner = map(definition.get("owner"));
-        if (!"SYSTEM".equals(owner.get("code")) && list(map(model.get("parent")).get("ancestryIds")).stream().noneMatch(id -> text(id).equals(text(owner.get("id"))))) return false;
+                || !Set.of("TEMPORARY_CA_CONFIG", "ANCESTOR_PROFILE", "ANCESTOR_METADATA").contains(text(season.get("source")))) return false;
         if ("TEMPORARY_CA_CONFIG".equals(season.get("source")) && !"CA".equals(season.get("countryCode"))) return false;
         try {
             java.time.LocalDate start = java.time.LocalDate.parse(text(season.get("seasonStart")));
@@ -224,6 +217,7 @@ public final class OnboardingReadiness {
         result.put("purchaseConfirmed", Boolean.TRUE.equals(purchase.get("purchaseConfirmed")));
         result.put("paymentConfirmed", false);
         result.put("configurationReady", blockers.isEmpty()); result.put("canProvision", false);
+        result.put("contractReadiness", model.getOrDefault("contractReadiness", Map.of("status", "NOT_READY", "reason", "TERMS_NOT_VERIFIED")));
         result.put("creationEnabled", false); result.put("paymentEnabled", false); result.put("grantIssuanceEnabled", false);
         result.put("executionGates", List.of("CONFIRMED_PAYMENT_REQUIRED", "PROVISIONING_EXECUTOR_NOT_ENABLED"));
         List<Map<String, Object>> described = new ArrayList<>();

@@ -26,6 +26,30 @@ public final class OnboardingExecutionTest {
         public void deliverAccess(){check(graph,"No credentials before graph verification");stage("access");access=true;}
     }
     public static void main(String[] args){
+        Map<String, Object> dates=m("SEASON_START","2026-11-01","SEASON_END","2027-03-31");
+        Map<String, Object> oldSeason=m("key","seasonSettings","entity","Dictionary","fields",m("attributes",dates));
+        Map<String, Object> newSeason=m("key","seasonSettings","entity","OrganizationMetadata","fields",m("metadata",new LinkedHashMap<>(dates)));
+        Map<String, Object> fallback=m("seasonStart","2026-11-01","seasonEnd","2027-03-31");
+        Map<String, Object> oldConfig=m("seasonSettingsContract",m("defaultSeason",fallback,"organizationAttribute","CONTRACT_SETTINGS","dictionaryTypeCode","CONTRACT_AWARE"),"organizationTypeCode","SERVICE_PROVIDER");
+        Map<String, Object> newConfig=m("seasonSettingsContract",m("defaultSeason",new LinkedHashMap<>(fallback)),"organizationTypeCode","SERVICE_PROVIDER");
+        Map<String, Object> oldPlan=m("source",m("orderId",235),"artifacts",List.of(oldSeason),"configuration",oldConfig);
+        Map<String, Object> newPlan=m("source",m("orderId",235),"artifacts",List.of(newSeason),"configuration",newConfig);
+        check(OnboardingExecution.normalizeLegacySeason(oldPlan,newPlan).equals(newPlan),"Read old frozen receipts when only season storage changes");
+        check(OnboardingExecution.comparableSavedConfiguration(oldPlan).equals(newConfig),"The write guard also accepts only the two removed legacy keys");
+        check(map(oldConfig.get("seasonSettingsContract")).size()==3,"The saved configuration is not mutated");
+        Map<String,Object> changed=new LinkedHashMap<>(newConfig);changed.put("organizationTypeCode","OPERATOR");
+        check(!OnboardingExecution.comparableSavedConfiguration(oldPlan).equals(changed),"Unrelated configuration drift still blocks");
+        Map<String,Object> oldSeasonConfig=map(oldConfig.get("seasonSettingsContract"));
+        oldSeasonConfig.put("dictionaryTypeCode","OTHER");
+        check(!OnboardingExecution.comparableSavedConfiguration(oldPlan).equals(newConfig),"Only the actual legacy dictionary settings are ignored");
+        oldSeasonConfig.put("dictionaryTypeCode","CONTRACT_AWARE");
+        fallback.put("seasonEnd","2027-04-01");
+        check(!OnboardingExecution.comparableSavedConfiguration(oldPlan).equals(newConfig),"Changes to default dates still block");
+        fallback.put("seasonEnd","2027-03-31");
+        newPlan.put("source",m("orderId",236));
+        check(!OnboardingExecution.normalizeLegacySeason(oldPlan,newPlan).equals(newPlan),"A changed purchase source is still refused");
+        map(map(newSeason.get("fields")).get("metadata")).put("SEASON_END","2027-04-01");
+        check(OnboardingExecution.normalizeLegacySeason(oldPlan,newPlan).equals(oldPlan),"Changed dates still require reconciliation");
         for(String gate:List.of("executionEnabled","grantIssuanceEnabled","accessDeliveryEnabled","paymentConfirmed","planVerified","enforcementReady")){
             Port p=new Port();p.flags.put(gate,false);Map<String,Object> r=OnboardingExecution.run(p);
             check("BLOCKED".equals(r.get("status")),gate+" blocks");check(p.attempts.isEmpty(),gate+" forbids every mutation");

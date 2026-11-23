@@ -14,7 +14,9 @@ import java.util.HexFormat;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.Currency;
@@ -210,39 +212,45 @@ public class MAIN_CLASS {
         Map<String, Object> parentInfo = new LinkedHashMap<>(), defaults = new LinkedHashMap<>();
         Set<Integer> ancestry = new LinkedHashSet<>();
         Dictionary seasonSettings = null;
+        Map<String, Object> seasonInfo = new LinkedHashMap<>(); seasonInfo.put("status", "MISSING");
+        boolean foundSeasonSource = false;
         if (parent != null) {
             parentInfo.put("status", "AVAILABLE"); parentInfo.put("id", parent.getId()); parentInfo.put("code", parent.getCode());
             for (Organization current = parent; current != null; current = current.getParent()) {
                 if (!ancestry.add(current.getId())) { errors.add("organizationAncestry: CYCLE"); parentInfo.put("status", "UNAVAILABLE"); break; }
                 Object language = current.findFirstAttributeValue("DEFAULT_LANGUAGE");
                 if (!defaults.containsKey("DEFAULT_LANGUAGE") && language instanceof String value && !value.isBlank()) defaults.put("DEFAULT_LANGUAGE", value);
+                if (foundSeasonSource) continue;
+                Map<String, Object> metadata = optionalMap(current.getMetadata());
+                if (metadata.containsKey("CONTRACT_SETTINGS")) {
+                    foundSeasonSource = true;
+                    Map<String, Object> settings = optionalMap(metadata.get("CONTRACT_SETTINGS"));
+                    seasonInfo.put("status", "AVAILABLE"); seasonInfo.put("source", "ANCESTOR_METADATA");
+                    seasonInfo.put("seasonStart", text(settings, "SEASON_START"));
+                    seasonInfo.put("seasonEnd", text(settings, "SEASON_END"));
+                    Object termsCode = settings.get("CONTRACT_TERMS_CODE");
+                    if (termsCode instanceof String code && !code.isBlank()) seasonInfo.put("termsCode", code.trim());
+                    else if (settings.containsKey("CONTRACT_TERMS_CODE")) seasonInfo.put("invalidTermsCode", true);
+                    continue;
+                }
                 Object settingsId = current.findFirstAttributeValue("CONTRACT_SETTINGS");
-                if (seasonSettings == null && settingsId != null && !String.valueOf(settingsId).isBlank()) {
+                if (settingsId != null && !String.valueOf(settingsId).isBlank()) {
+                    foundSeasonSource = true;
                     try { seasonSettings = dictionaryManager.get(Math.toIntExact(number(settingsId))); }
                     catch (Exception failure) { errors.add("CONTRACT_SETTINGS: INVALID_REFERENCE"); }
                 }
             }
             parentInfo.put("ancestryIds", new ArrayList<>(ancestry));
         } else parentInfo.put("status", "UNAVAILABLE");
-        boolean seasonStartAvailable = false;
         Map<String, Object> seasonContract = optionalMap(config.get("seasonSettingsContract"));
-        try { result.put("seasonSettingsType", transactionUtils.getInNewTx(() -> describeType("DictionaryType", text(seasonContract, "dictionaryTypeCode")))); }
-        catch (Exception failure) { result.put("seasonSettingsType", Map.of("status", "UNAVAILABLE")); errors.add("seasonSettingsType: " + failure.getClass().getSimpleName()); }
-        Map<String, Object> seasonInfo = new LinkedHashMap<>(); seasonInfo.put("status", "MISSING");
         if (seasonSettings != null && seasonSettings.getOrganization() != null && ancestry.contains(seasonSettings.getOrganization().getId())
-                && seasonSettings.getType() != null && text(seasonContract, "dictionaryTypeCode").equals(seasonSettings.getType().getCode())) {
-            seasonInfo.put("status", "AVAILABLE"); seasonInfo.put("templateId", seasonSettings.getId());
+                && seasonSettings.getType() != null && "CONTRACT_AWARE".equals(seasonSettings.getType().getCode())) {
+            seasonInfo.put("status", "AVAILABLE");
             seasonInfo.put("source", "ANCESTOR_PROFILE");
-            seasonInfo.put("typeCode", seasonSettings.getType().getCode());
-            Object start = seasonSettings.findFirstAttributeValue("SEASON_START");
-            if (start != null) {
-                try { java.time.LocalDate.parse(String.valueOf(start)); seasonStartAvailable = true; seasonInfo.put("seasonStart", String.valueOf(start)); }
-                catch (Exception failure) { errors.add("SEASON_START: INVALID_DATE"); }
-            }
-            Object end = seasonSettings.findFirstAttributeValue("SEASON_END");
-            if (end != null) seasonInfo.put("seasonEnd", String.valueOf(end));
+            seasonInfo.put("seasonStart", Objects.toString(seasonSettings.findFirstAttributeValue("SEASON_START"), ""));
+            seasonInfo.put("seasonEnd", Objects.toString(seasonSettings.findFirstAttributeValue("SEASON_END"), ""));
         } else if (seasonSettings != null) errors.add("CONTRACT_SETTINGS: TYPE_OR_SCOPE_UNVERIFIED");
-        if (seasonSettings == null) {
+        if (!foundSeasonSource) {
             Map<String, Object> fallback = optionalMap(seasonContract.get("defaultSeason"));
             if ("TEMPORARY_CA_CONFIG".equals(fallback.get("source")) && "CA".equals(config.get("countryCode")) && "CA".equals(fallback.get("countryCode"))) {
                 try {
@@ -250,14 +258,15 @@ public class MAIN_CLASS {
                     java.time.LocalDate end = java.time.LocalDate.parse(text(fallback, "seasonEnd"));
                     if (end.isBefore(start)) throw new IllegalArgumentException();
                     seasonInfo.put("status", "CONFIGURED"); seasonInfo.put("source", "TEMPORARY_CA_CONFIG"); seasonInfo.put("countryCode", "CA");
-                    seasonInfo.put("typeCode", text(seasonContract, "dictionaryTypeCode")); seasonInfo.put("seasonStart", start.toString()); seasonInfo.put("seasonEnd", end.toString());
-                    seasonStartAvailable = true;
+                    seasonInfo.put("seasonStart", start.toString()); seasonInfo.put("seasonEnd", end.toString());
                 } catch (RuntimeException invalid) { errors.add("DEFAULT_CA_SEASON: INVALID_DATES"); }
             }
         }
-        seasonInfo.put("requiresCompanyProfileCreation", true); seasonInfo.put("creationEnabled", false);
         result.put("seasonSettings", seasonInfo);
-        result.put("seasonStartAvailable", seasonStartAvailable);
+        result.put("seasonStartAvailable", !text(seasonInfo, "seasonStart").isBlank());
+        result.put("contractReadiness", OnboardingReadiness.seasonSourceReady(result)
+                ? onboardContractTerms(seasonInfo, ancestry, Objects.toString(defaults.get("DEFAULT_LANGUAGE"), "en"))
+                : Map.of("status", "NOT_READY", "reason", "INVALID_SEASON_DATES"));
         Map<String, Object> organizationType = optionalMap(result.get("organizationType"));
         for (Object raw : (Collection<?>) organizationType.getOrDefault("attributes", List.of())) {
             Map<String, Object> field = objectMap(raw);
@@ -309,6 +318,46 @@ public class MAIN_CLASS {
         result.put("availableModelEntities", entityManager.getMetamodel().getEntities().stream().map(type -> type.getName())
                 .filter(name -> Set.of("OrganizationType", "AccountType", "ResourceType", "DocumentType", "OrderType", "DictionaryType").contains(name)).sorted().toList());
         result.put("inspectionOnly", true); result.put("creationEnabled", false);
+        return result;
+    }
+
+    private Map<String, Object> onboardContractTerms(Map<String, Object> season, Set<Integer> ancestry, String languageTag) {
+        String code = text(season, "termsCode");
+        if (code.isBlank()) {
+            String reason = Boolean.TRUE.equals(season.get("invalidTermsCode")) ? "INVALID_TERMS_CODE" : "MISSING_TERMS_CODE";
+            return Map.of("status", "NOT_READY", "reason", reason);
+        }
+        String language = Locale.forLanguageTag(languageTag.trim().replace('_', '-')).getLanguage();
+        Map<String, Object> result = new LinkedHashMap<>(Map.of("status", "NOT_READY", "documentCode", code, "language", language));
+        try {
+            Set<Integer> allowedOwners = new LinkedHashSet<>(ancestry);
+            Organization system = organizationManager.getByCode("SYSTEM");
+            if (system != null) allowedOwners.add(system.getId());
+            var docs = allowedOwners.isEmpty() ? List.<com.pixelnation.common.domain.Document>of() : onboardingDocuments.selectJPQL(
+                    "SELECT d FROM Document d WHERE d.code = :code AND d.organization.id IN :owners",
+                    Map.of("code", code, "owners", allowedOwners), com.pixelnation.common.domain.Document.class);
+            if (docs.size() != 1) {
+                result.put("reason", docs.isEmpty() ? "TERMS_DOCUMENT_MISSING" : "TERMS_DOCUMENT_AMBIGUOUS");
+                return result;
+            }
+            var lang = language.length() == 2 ? onboardingLanguages.getByCode2(language) : onboardingLanguages.get(language);
+            if (lang == null) {
+                result.put("reason", "TERMS_LANGUAGE_UNAVAILABLE");
+                return result;
+            }
+            var translations = entityManager.createQuery(
+                    "SELECT c FROM LocalizedTextContent c WHERE c.document.id = :documentId AND c.language.id = :languageId",
+                    com.pixelnation.common.domain.LocalizedTextContent.class)
+                    .setParameter("documentId", docs.getFirst().getId()).setParameter("languageId", lang.getId())
+                    .setMaxResults(2).getResultList();
+            if (translations.size() == 1 && !Objects.toString(translations.getFirst().getContent(), "").isBlank()) {
+                result.put("status", "READY");
+            } else {
+                result.put("reason", translations.size() > 1 ? "TERMS_TRANSLATION_AMBIGUOUS" : "TERMS_TRANSLATION_MISSING");
+            }
+        } catch (RuntimeException unavailable) {
+            result.put("reason", "TERMS_LOOKUP_UNAVAILABLE");
+        }
         return result;
     }
 
@@ -1507,14 +1556,13 @@ public class MAIN_CLASS {
             required(organization, organizationValues, "organization", blockers);
             steps.add(step("organization", "Organization", organization, Map.of("parent", parent, "name", text(purchase.get("companyName")), "attributes", organizationValues)));
     
-            Map<String, Object> season = map(model.get("seasonSettings")), seasonType = map(model.get("seasonSettingsType"));
-            if (!seasonSourceReady(model)) block(blockers, "seasonSettings", "SEASON_SETTINGS_REQUIRED", "CONTRACT_SETTINGS.SEASON_START", "Нужен проверенный источник дат начала и конца сезона для будущего профиля CONTRACT_AWARE.");
+            Map<String, Object> season = map(model.get("seasonSettings"));
+            if (!seasonSourceReady(model)) block(blockers, "seasonSettings", "SEASON_SETTINGS_REQUIRED", "metadata.CONTRACT_SETTINGS.SEASON_START", "Нужен проверенный источник дат начала и конца сезона.");
             Map<String, Object> seasonValues = new LinkedHashMap<>();
-            seasonValues.put("LEGAL_NAME", text(purchase.get("companyName")));
             seasonValues.put("SEASON_START", text(season.get("seasonStart"))); seasonValues.put("SEASON_END", text(season.get("seasonEnd")));
-            required(seasonType, seasonValues, "seasonSettings", blockers);
-            steps.add(step("seasonSettings", "Dictionary", seasonType, Map.of("organization", Map.of("reference", "organization"),
-                    "attributes", seasonValues, "source", season, "attachToOrganizationAttribute", "CONTRACT_SETTINGS", "existingEntityAvailable", false)));
+            if (present(season.get("termsCode"))) seasonValues.put("CONTRACT_TERMS_CODE", season.get("termsCode"));
+            steps.add(step("seasonSettings", "OrganizationMetadata", Map.of(), Map.of("organization", Map.of("reference", "organization"),
+                    "metadata", seasonValues, "source", season)));
     
             Map<String, Object> role = map(model.get("adminRole"));
             if (!"AVAILABLE".equals(role.get("status"))) block(blockers, "administrator", "ADMIN_ROLE_UNAVAILABLE", "role", "Не найдена однозначная роль администратора компании.");
@@ -1609,15 +1657,9 @@ public class MAIN_CLASS {
         }
     
         private static boolean seasonSourceReady(Map<String, Object> model) {
-            Map<String, Object> season = map(model.get("seasonSettings")), definition = map(model.get("seasonSettingsType"));
+            Map<String, Object> season = map(model.get("seasonSettings"));
             if (!Boolean.TRUE.equals(model.get("seasonStartAvailable")) || !Set.of("AVAILABLE", "CONFIGURED").contains(text(season.get("status")))
-                    || !"CONTRACT_AWARE".equals(season.get("typeCode")) || !"AVAILABLE".equals(definition.get("status"))
-                    || !"CONTRACT_AWARE".equals(definition.get("code")) || !Set.of("TEMPORARY_CA_CONFIG", "ANCESTOR_PROFILE").contains(text(season.get("source")))) return false;
-            for (String code : List.of("SEASON_START", "SEASON_END")) {
-                if (list(definition.get("attributes")).stream().map(OnboardingReadiness::map).noneMatch(field -> code.equals(field.get("code")) && "java.time.LocalDate".equals(field.get("className")))) return false;
-            }
-            Map<String, Object> owner = map(definition.get("owner"));
-            if (!"SYSTEM".equals(owner.get("code")) && list(map(model.get("parent")).get("ancestryIds")).stream().noneMatch(id -> text(id).equals(text(owner.get("id"))))) return false;
+                    || !Set.of("TEMPORARY_CA_CONFIG", "ANCESTOR_PROFILE", "ANCESTOR_METADATA").contains(text(season.get("source")))) return false;
             if ("TEMPORARY_CA_CONFIG".equals(season.get("source")) && !"CA".equals(season.get("countryCode"))) return false;
             try {
                 java.time.LocalDate start = java.time.LocalDate.parse(text(season.get("seasonStart")));
@@ -1688,6 +1730,7 @@ public class MAIN_CLASS {
             result.put("purchaseConfirmed", Boolean.TRUE.equals(purchase.get("purchaseConfirmed")));
             result.put("paymentConfirmed", false);
             result.put("configurationReady", blockers.isEmpty()); result.put("canProvision", false);
+            result.put("contractReadiness", model.getOrDefault("contractReadiness", Map.of("status", "NOT_READY", "reason", "TERMS_NOT_VERIFIED")));
             result.put("creationEnabled", false); result.put("paymentEnabled", false); result.put("grantIssuanceEnabled", false);
             result.put("executionGates", List.of("CONFIRMED_PAYMENT_REQUIRED", "PROVISIONING_EXECUTOR_NOT_ENABLED"));
             List<Map<String, Object>> described = new ArrayList<>();
@@ -1739,6 +1782,38 @@ public class MAIN_CLASS {
         private static List<?> list(Object raw) { return raw instanceof List<?> rows ? rows : List.of(); }
         private static boolean yes(Map<String, Object> map, String key) { return Boolean.TRUE.equals(map.get(key)); }
     
+        static Map<String, Object> normalizeLegacySeason(Map<String, Object> saved, Map<String, Object> current) {
+            List<?> oldArtifacts = list(saved.get("artifacts")), newArtifacts = list(current.get("artifacts"));
+            Map<String, Object> oldSeason = seasonArtifact(oldArtifacts), newSeason = seasonArtifact(newArtifacts);
+            if (!"Dictionary".equals(oldSeason.get("entity")) || !"OrganizationMetadata".equals(newSeason.get("entity"))) return saved;
+            Map<String, Object> oldDates = map(map(oldSeason.get("fields")).get("attributes"));
+            Map<String, Object> newDates = map(map(newSeason.get("fields")).get("metadata"));
+            for (String key : List.of("SEASON_START", "SEASON_END")) {
+                String date = java.util.Objects.toString(oldDates.get(key), "");
+                if (date.isBlank() || !date.equals(newDates.get(key))) return saved;
+            }
+            Map<String, Object> migrated = new LinkedHashMap<>(saved);
+            migrated.put("artifacts", oldArtifacts.stream().map(row -> row == oldSeason ? newSeason : row).toList());
+            migrated.put("configuration", comparableSavedConfiguration(saved));
+            return migrated;
+        }
+        static Map<String, Object> comparableSavedConfiguration(Map<String, Object> plan) {
+            Map<String, Object> configuration = map(plan.get("configuration"));
+            Map<String, Object> season = map(configuration.get("seasonSettingsContract"));
+            if (!"Dictionary".equals(seasonArtifact(list(plan.get("artifacts"))).get("entity"))
+                    || !"CONTRACT_SETTINGS".equals(season.get("organizationAttribute"))
+                    || !"CONTRACT_AWARE".equals(season.get("dictionaryTypeCode"))) return configuration;
+            Map<String, Object> normalizedSeason = new LinkedHashMap<>(season);
+            normalizedSeason.remove("organizationAttribute");
+            normalizedSeason.remove("dictionaryTypeCode");
+            Map<String, Object> comparable = new LinkedHashMap<>(configuration);
+            comparable.put("seasonSettingsContract", normalizedSeason);
+            return comparable;
+        }
+        private static Map<String, Object> seasonArtifact(List<?> artifacts) {
+            return artifacts.stream().map(OnboardingExecution::map)
+                    .filter(row -> "seasonSettings".equals(row.get("key"))).findFirst().orElse(Map.of());
+        }
         public static Map<String, Object> plan(Map<String, Object> purchase, Map<String, Object> readiness, Map<String, Object> config) {
             if (!yes(readiness, "persistedPurchaseVerified") || !yes(readiness, "configurationReady")
                     || !list(readiness.get("blockers")).isEmpty()) throw new IllegalArgumentException("Verified ready purchase required");
@@ -1897,8 +1972,13 @@ public class MAIN_CLASS {
             trusted.put("currency", Map.of("id", purchase.getCurrency().getId(), "code", purchase.getCurrency().getCode()));
             Map<String, Object> plan = OnboardingExecution.plan(trusted, readiness, provisioningConfig());
             if (!digest(canonicalJson(nativePreview.get("entitlements"))).equals(source.get("entitlementFingerprint"))) throw new ApplicationException("Committed Entitlements changed");
-            String fingerprint = digest(canonicalJson(plan));
             Map<String, Object> previous = optionalMap(purchase.getMetadata().get(ONBOARDING));
+            if (!previous.isEmpty()) {
+                Map<String, Object> savedPlan = objectMap(previous.get("plan"));
+                if (canonicalJson(OnboardingExecution.normalizeLegacySeason(savedPlan, plan)).equals(canonicalJson(plan))
+                        && digest(canonicalJson(savedPlan)).equals(previous.get("planDigest"))) plan = savedPlan;
+            }
+            String fingerprint = digest(canonicalJson(plan));
             if (!previous.isEmpty() && !fingerprint.equals(previous.get("planDigest"))) throw new ApplicationException("Frozen onboarding plan changed; operator reconciliation required");
             if (previous.isEmpty()) {
                 Map<String, Object> receipt = new LinkedHashMap<>();
@@ -1907,7 +1987,8 @@ public class MAIN_CLASS {
                 saveOnboarding(purchase, receipt);
             }
             return Map.of("status", "AWAITING_PAYMENT", "orderId", purchase.getId(), "planDigest", fingerprint,
-                    "plan", plan, "enforcementBlockers", enforcementBlockers(state(purchase)), "paymentEnabled", false, "creationEnabled", false);
+                    "plan", plan, "contractReadiness", objectMap(readiness.get("contractReadiness")),
+                    "enforcementBlockers", enforcementBlockers(state(purchase)), "paymentEnabled", false, "creationEnabled", false);
         });
     }
     public Map<String, Object> provisionOnboarding(String payloadJson) {
@@ -1978,7 +2059,7 @@ public class MAIN_CLASS {
                     if (plan.isEmpty() || !Boolean.TRUE.equals(paidEvidence(purchase, source).get("confirmed"))) throw new ApplicationException("Native confirmed payment and frozen onboarding plan required");
                     Map<String,Object> coverage = optionalMap(state.get("coverage"));
                     if (!coverage.isEmpty() && !java.time.LocalDateTime.parse(text(coverage,"to")).isAfter(java.time.LocalDateTime.now())) throw new ApplicationException("Paid coverage expired; reconciliation required");
-                    if (!canonicalJson(provisioningConfig()).equals(canonicalJson(plan.get("configuration")))) throw new ApplicationException("Onboarding configuration changed; reconciliation required");
+                    if (!matchesFrozenConfiguration(plan)) throw new ApplicationException("Onboarding configuration changed; reconciliation required");
                 }
                 return work.apply(purchase);
             });
@@ -1990,6 +2071,8 @@ public class MAIN_CLASS {
                 result.put("enforcementReady", enforcementBlockers(state).isEmpty());
                 result.put("enforcementBlockers", enforcementBlockers(state));
                 result.put("paymentConfirmed", paidEvidence(purchase, source).get("confirmed")); result.put("planVerified", !state.isEmpty());
+                Map<String, Object> plan = optionalMap(state.get("plan"));
+                if (!plan.isEmpty()) result.put("frozenConfigurationMatches", matchesFrozenConfiguration(plan));
                 result.put("graphVerified", Boolean.TRUE.equals(state.get("graphVerified")));
                 result.put("accessDelivered", "DELIVERED".equals(state.get("accessStatus")) && "QUEUED".equals(state.get("readyMailStatus")));
                 result.put("receipt", Map.of("orderId", purchase.getId(), "records", optionalMap(state.get("records")), "status", state.getOrDefault("status", "NOT_PREPARED")));
@@ -2127,7 +2210,15 @@ public class MAIN_CLASS {
         var orgType = entityManager.find(com.pixelnation.common.domain.OrganizationType.class, Math.toIntExact(number(orgSpec.get("typeId"))));
         initializeOnboardingEntity(target, orgType, text(objectMap(plan.get("source")), "companyName"));
         setOnboardingAttributes(target, orgType, objectMap(orgSpec.get("attributes")), records);
-        target.setMetadata(new LinkedHashMap<>(Map.of(ONBOARDING, onboardingMarker(purchase, state))));
+        Map<String, Object> seasonSpec = artifact(state, "seasonSettings");
+        // A frozen plan prepared before the migration carries its dates in the old Dictionary artifact.
+        Map<String, Object> season = optionalMap(seasonSpec.get("metadata"));
+        if (season.isEmpty()) {
+            Map<String, Object> legacy = objectMap(seasonSpec.get("attributes"));
+            season = Map.of("SEASON_START", text(legacy, "SEASON_START"), "SEASON_END", text(legacy, "SEASON_END"));
+        }
+        verifyContractDates(season);
+        target.setMetadata(new LinkedHashMap<>(Map.of(ONBOARDING, onboardingMarker(purchase, state), "CONTRACT_SETTINGS", season)));
         Map<String, Object> contactSource = objectMap(plan.get("source"));
         Contact legalContact = new Contact(); legalContact.setType(contactTypeManager.getByCode("LEGAL"));
         if (legalContact.getType() == null) throw new ApplicationException("LEGAL contact type unavailable");
@@ -2141,15 +2232,6 @@ public class MAIN_CLASS {
         organizationAddress.getTypes().add(addressTypeManager.getByCode("BILLING")); organizationAddress.getTypes().add(addressTypeManager.getByCode("LEGAL"));
         target.getAddresses().add(organizationAddress);
         target = organizationManager.save(target); organizationManager.flush(); records.put("organization", target.getId());
-
-        Map<String, Object> seasonSpec = artifact(state, "seasonSettings");
-        var seasonType = entityManager.find(com.pixelnation.common.domain.DictionaryType.class, Math.toIntExact(number(seasonSpec.get("typeId"))));
-        Dictionary season = new Dictionary(); season.setOrganization(target); season.setCode("PS_SEASON_" + purchase.getId());
-        initializeOnboardingEntity(season, seasonType, "Season settings");
-        setOnboardingAttributes(season, seasonType, objectMap(seasonSpec.get("attributes")), records);
-        season.setMetadata(new LinkedHashMap<>(Map.of(ONBOARDING, onboardingMarker(purchase, state))));
-        season = dictionaryManager.save(season); dictionaryManager.flush(); records.put("seasonSettings", season.getId());
-        setOnboardingAttribute(target, orgType, "CONTRACT_SETTINGS", season.getId()); organizationManager.save(target);
 
         Account ledger = new Account(); ledger.setOrganization(target); ledger.setCode("PS_LEDGER_" + purchase.getId());
         AccountType ledgerType = accountTypeManager.get(Math.toIntExact(number(artifact(state, "ledger").get("typeId"))));
@@ -2286,10 +2368,16 @@ public class MAIN_CLASS {
         if (legalContacts.size() != 1 || legalContacts.getFirst().getContactEntries().stream().noneMatch(entry -> entry.getType() != null && "EMAIL".equals(entry.getType().getCode()) && text(buyer,"email").equals(entry.getValue()))) throw new ApplicationException("Organization legal contact changed");
         if (target.getParent() == null || !text(onboardingConfig(), "parentOrganizationCode").equals(target.getParent().getCode())
                 || !Boolean.TRUE.equals(target.getEnabled()) || !target.getCode().equals("PS_ORG_" + purchase.getId())) throw new ApplicationException("Onboarding organization changed");
-        Dictionary season = entityManager.find(Dictionary.class, Math.toIntExact(number(records.get("seasonSettings"))));
-        verifyArtifact(season, artifact(state, "seasonSettings"), target, purchase, state);
-        verifyAttributes(season, objectMap(artifact(state, "seasonSettings").get("attributes")), records);
-        if (number(target.findFirstAttributeValue("CONTRACT_SETTINGS")) != season.getId().longValue()) throw new ApplicationException("Onboarding season link changed");
+        Map<String, Object> metadata = optionalMap(target.getMetadata());
+        if (metadata.containsKey("CONTRACT_SETTINGS")) {
+            verifyContractDates(optionalMap(metadata.get("CONTRACT_SETTINGS")));
+        } else if (records.containsKey("seasonSettings")) {
+            // Older completed purchases retain their original receipt and Dictionary until moved.
+            Dictionary season = entityManager.find(Dictionary.class, Math.toIntExact(number(records.get("seasonSettings"))));
+            verifyArtifact(season, artifact(state, "seasonSettings"), target, purchase, state);
+            verifyAttributes(season, objectMap(artifact(state, "seasonSettings").get("attributes")), records);
+            if (number(target.findFirstAttributeValue("CONTRACT_SETTINGS")) != season.getId().longValue()) throw new ApplicationException("Onboarding season link changed");
+        } else throw new ApplicationException("Organization contract settings are missing");
         Account ledger = accountManager.get(Math.toIntExact(number(records.get("ledger"))));
         verifyArtifact(ledger, artifact(state, "ledger"), target, purchase, state);
         List<Account> ledgers = accountManager.selectJPQL("SELECT a FROM Account a WHERE a.organization.id = :org AND a.type.code = :code",
@@ -2306,6 +2394,16 @@ public class MAIN_CLASS {
                     && target.getId().equals(assignment.getOrganization().getId()) && assignment.getRole().getId().longValue() == roleId).count() != 1) throw new ApplicationException("Onboarding administrator assignment changed");
         verifyOnboardingAllowances(purchase, state, target);
         verifyOnboardingEnforcement(purchase, state, target);
+    }
+    private void verifyContractDates(Map<String, Object> season) {
+        try {
+            var start = java.time.LocalDate.parse(text(season, "SEASON_START"));
+            var end = java.time.LocalDate.parse(text(season, "SEASON_END"));
+            if (!end.isBefore(start)) return;
+        } catch (java.time.format.DateTimeParseException invalid) {
+            // The receipt or the organization's configured dates need correction.
+        }
+        throw new ApplicationException("Organization contract settings require valid season dates");
     }
     @SuppressWarnings("rawtypes")
     private void verifyArtifact(com.pixelnation.common.domain.AbstractTypedEntity row, Map<String, Object> spec, Organization target, Order purchase, Map<String, Object> state) {
@@ -2459,6 +2557,11 @@ public class MAIN_CLASS {
         Map<String,Object> result = new LinkedHashMap<>(onboardingConfig());
         result.put("executorEnforcement", objectMap(scriptManager.getByCode(SCRIPT).getMetadata().get("ONBOARDING_ENFORCEMENT_CONFIG"))); return result;
     }
+    private boolean matchesFrozenConfiguration(Map<String, Object> plan) {
+        String current = canonicalJson(provisioningConfig());
+        return current.equals(canonicalJson(plan.get("configuration")))
+                || current.equals(canonicalJson(OnboardingExecution.comparableSavedConfiguration(plan)));
+    }
     private List<String> enforcementBlockers(Map<String,Object> state) {
         Map<String,Object> plan=optionalMap(state.get("plan")); if(plan.isEmpty())return List.of("FROZEN_PLAN_REQUIRED");
         List<String> blockers=new ArrayList<>();
@@ -2556,6 +2659,7 @@ public class MAIN_CLASS {
         Map<String,Object> safe=new LinkedHashMap<>();
         safe.put("status",optionalMap(inspected.get("receipt")).get("status"));
         for(String key:List.of("paymentConfirmed","graphVerified","accessDelivered","enforcementBlockers","errorCode"))safe.put(key,inspected.get(key));
+        if (inspected.containsKey("frozenConfigurationMatches")) safe.put("frozenConfigurationMatches", inspected.get("frozenConfigurationMatches"));
         safe.put("paymentEnabled",false);safe.put("buyerHttpAdapterAvailable",false);return safe;
     }
 

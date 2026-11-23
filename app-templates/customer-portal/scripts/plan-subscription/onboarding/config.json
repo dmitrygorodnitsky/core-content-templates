@@ -36,8 +36,6 @@
     "runtimeVerification": "NOT_PERFORMED"
   },
   "seasonSettingsContract": {
-    "organizationAttribute": "CONTRACT_SETTINGS",
-    "dictionaryTypeCode": "CONTRACT_AWARE",
     "defaultSeason": {
       "source": "TEMPORARY_CA_CONFIG",
       "countryCode": "CA",

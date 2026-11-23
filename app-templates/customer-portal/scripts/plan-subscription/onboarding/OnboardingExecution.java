@@ -19,6 +19,38 @@ public final class OnboardingExecution {
     private static List<?> list(Object raw) { return raw instanceof List<?> rows ? rows : List.of(); }
     private static boolean yes(Map<String, Object> map, String key) { return Boolean.TRUE.equals(map.get(key)); }
 
+    static Map<String, Object> normalizeLegacySeason(Map<String, Object> saved, Map<String, Object> current) {
+        List<?> oldArtifacts = list(saved.get("artifacts")), newArtifacts = list(current.get("artifacts"));
+        Map<String, Object> oldSeason = seasonArtifact(oldArtifacts), newSeason = seasonArtifact(newArtifacts);
+        if (!"Dictionary".equals(oldSeason.get("entity")) || !"OrganizationMetadata".equals(newSeason.get("entity"))) return saved;
+        Map<String, Object> oldDates = map(map(oldSeason.get("fields")).get("attributes"));
+        Map<String, Object> newDates = map(map(newSeason.get("fields")).get("metadata"));
+        for (String key : List.of("SEASON_START", "SEASON_END")) {
+            String date = java.util.Objects.toString(oldDates.get(key), "");
+            if (date.isBlank() || !date.equals(newDates.get(key))) return saved;
+        }
+        Map<String, Object> migrated = new LinkedHashMap<>(saved);
+        migrated.put("artifacts", oldArtifacts.stream().map(row -> row == oldSeason ? newSeason : row).toList());
+        migrated.put("configuration", comparableSavedConfiguration(saved));
+        return migrated;
+    }
+    static Map<String, Object> comparableSavedConfiguration(Map<String, Object> plan) {
+        Map<String, Object> configuration = map(plan.get("configuration"));
+        Map<String, Object> season = map(configuration.get("seasonSettingsContract"));
+        if (!"Dictionary".equals(seasonArtifact(list(plan.get("artifacts"))).get("entity"))
+                || !"CONTRACT_SETTINGS".equals(season.get("organizationAttribute"))
+                || !"CONTRACT_AWARE".equals(season.get("dictionaryTypeCode"))) return configuration;
+        Map<String, Object> normalizedSeason = new LinkedHashMap<>(season);
+        normalizedSeason.remove("organizationAttribute");
+        normalizedSeason.remove("dictionaryTypeCode");
+        Map<String, Object> comparable = new LinkedHashMap<>(configuration);
+        comparable.put("seasonSettingsContract", normalizedSeason);
+        return comparable;
+    }
+    private static Map<String, Object> seasonArtifact(List<?> artifacts) {
+        return artifacts.stream().map(OnboardingExecution::map)
+                .filter(row -> "seasonSettings".equals(row.get("key"))).findFirst().orElse(Map.of());
+    }
     public static Map<String, Object> plan(Map<String, Object> purchase, Map<String, Object> readiness, Map<String, Object> config) {
         if (!yes(readiness, "persistedPurchaseVerified") || !yes(readiness, "configurationReady")
                 || !list(readiness.get("blockers")).isEmpty()) throw new IllegalArgumentException("Verified ready purchase required");
