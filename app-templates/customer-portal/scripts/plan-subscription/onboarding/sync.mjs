@@ -53,6 +53,17 @@ const executor = (await fs.readFile(new URL('./OnboardingExecution.java',import.
 await embed('../PLAN_SUBSCRIPTION_DRAFT.java','ONBOARDING EXECUTION', executor.split('\n').map(line=>'    '+line).join('\n'));
 await embed('../PLAN_SUBSCRIPTION_DRAFT.java','ONBOARDING NATIVE EXECUTOR',await fs.readFile(new URL('./native-executor.java.inc',import.meta.url),'utf8'));
 await embed('../PLAN_SUBSCRIPTION_ONBOARDING_MODEL.java','ONBOARDING RESOURCE EXECUTOR',await fs.readFile(new URL('./resource-executor.java.inc',import.meta.url),'utf8'));
+const portal = (await fs.readFile(new URL('./CustomerPortalOnboarding.java', import.meta.url), 'utf8')).trim()
+  .replace('final class CustomerPortalOnboarding', 'private static final class CustomerPortalOnboarding');
+for (const name of ['../PLAN_SUBSCRIPTION_DRAFT.java', '../PLAN_SUBSCRIPTION_WORKFLOW.java']) {
+  await embed(name, 'ONBOARDING CUSTOMER PORTAL URL', portal.split('\n').map(line => line ? '    ' + line : line).join('\n'));
+}
+const timing = (await fs.readFile(new URL('./OnboardingTiming.java', import.meta.url), 'utf8')).trim()
+  .replace('final class OnboardingTiming', 'private static final class OnboardingTiming');
+for (const name of ['../PLAN_SUBSCRIPTION_DRAFT.java', '../PLAN_SUBSCRIPTION_WORKFLOW.java']) {
+  await embed(name, 'ONBOARDING TIMING', timing.split('\n').map(line => line ? '    ' + line : line).join('\n'));
+}
+await embed('../PLAN_SUBSCRIPTION_WORKFLOW.java', 'ONBOARDING CUSTOMER PORTAL EXECUTOR', await fs.readFile(new URL('./portal-executor.java.inc', import.meta.url), 'utf8'));
 
 await embed('../PLAN_SUBSCRIPTION_DRAFT.java','CHECKOUT TAX ASSIGNMENT',await fs.readFile(new URL('../checkout/tax-assignment.java.inc',import.meta.url),'utf8'));
 await embed('../PLAN_SUBSCRIPTION_DRAFT.java','CHECKOUT TAX PREVIEW',await fs.readFile(new URL('../checkout/tax-preview.java.inc',import.meta.url),'utf8'));
@@ -88,6 +99,13 @@ const add = (script, name, parameters) => {
 };
 const param = (name, type) => ({ name, type, required: true });
 add(cms, 'checkOnboardingReadiness', [param('formId', 'java.lang.Integer'), param('checkoutDigest', 'java.lang.String')]);
+add(cms, 'ensureOnboardingCustomerPortal', [param('payloadJson', 'java.lang.String')]);
+add(cms, 'checkOnboardingCustomerPortal', []);
+for (const [script, module] of [[cms, 'CMS'], [bill, 'BILLING']]) {
+  const seconds = Number(timing.match(new RegExp(module + '_SCRIPT_TIMEOUT_SECONDS = (\\d+)'))?.[1]);
+  assert.ok(seconds > 0, 'Missing script timeout for ' + module);
+  if (write) script.timeout = seconds; else assert.equal(script.timeout, seconds);
+}
 add(bill, 'checkOnboardingReadiness', [param('payloadJson', 'java.lang.String')]);
 add(bill, 'inspectOnboardingConfiguration', []);
 const executionConfig = JSON.parse(await fs.readFile(new URL('./executor-config.json', import.meta.url),'utf8'));

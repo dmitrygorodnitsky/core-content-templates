@@ -201,6 +201,20 @@
                 "required": true
               }
             ]
+          },
+          {
+            "name": "ensureOnboardingCustomerPortal",
+            "parameters": [
+              {
+                "name": "payloadJson",
+                "type": "java.lang.String",
+                "required": true
+              }
+            ]
+          },
+          {
+            "name": "checkOnboardingCustomerPortal",
+            "parameters": []
           }
         ],
         "CAPABILITIES": [
@@ -217,7 +231,8 @@
       "contentFile": "PLAN_SUBSCRIPTION_WORKFLOW.java",
       "serverUpdated": {
         "dev-1": 1792777011184
-      }
+      },
+      "timeout": 345
     },
     {
       "code": "PLAN_SUBSCRIPTION_DRAFT",
@@ -688,6 +703,11 @@
           "accessDeliveryEnabled": true,
           "paymentEnabled": false,
           "helperCode": "PLAN_SUBSCRIPTION_WORKFLOW",
+          "providerTypeOwnerCode": "WINTER_SERVICES",
+          "quoteSourceFingerprints": {
+            "SNOW_SERVICE_QUOTATION_DELIVERY_V17": "9b44704be0c5269edfe62307bde38c74dbe1155868961d5968d5f22a14e54f1f",
+            "SNOW_QUOTATION_DECISION_CONFIRMATION_V10": "791ff272ea1d322993d7bf6f4aa439dad2144469e51529ea8351ca4bc014c5f7"
+          },
           "readyNotificationEnabled": true,
           "readyLoginUrl": "https://dev-1.servicewand.com/core/apps/service-wand/index.html",
           "nativePaidInvoiceRequired": true,
@@ -726,7 +746,8 @@
       "contentFile": "PLAN_SUBSCRIPTION_DRAFT.java",
       "serverUpdated": {
         "dev-1": 1794334454599
-      }
+      },
+      "timeout": 480
     },
     {
       "code": "PLAN_SUBSCRIPTION_ONBOARDING_MODEL",
@@ -783,6 +804,11 @@
           "accessDeliveryEnabled": true,
           "paymentEnabled": false,
           "helperCode": "PLAN_SUBSCRIPTION_WORKFLOW",
+          "providerTypeOwnerCode": "WINTER_SERVICES",
+          "quoteSourceFingerprints": {
+            "SNOW_SERVICE_QUOTATION_DELIVERY_V17": "9b44704be0c5269edfe62307bde38c74dbe1155868961d5968d5f22a14e54f1f",
+            "SNOW_QUOTATION_DECISION_CONFIRMATION_V10": "791ff272ea1d322993d7bf6f4aa439dad2144469e51529ea8351ca4bc014c5f7"
+          },
           "readyNotificationEnabled": true,
           "readyLoginUrl": "https://dev-1.servicewand.com/core/apps/service-wand/index.html",
           "nativePaidInvoiceRequired": true,

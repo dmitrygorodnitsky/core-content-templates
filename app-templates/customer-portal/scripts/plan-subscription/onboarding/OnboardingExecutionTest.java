@@ -23,9 +23,27 @@ public final class OnboardingExecutionTest {
         private void stage(String name){ attempts.add(name); if(!mutate.isEmpty() && mutate.equals(name))throw new IllegalStateException("native receipt mismatch"); if(!committed.contains(name))committed.add(name); if(fail.equals(name)){fail="";throw new IllegalStateException("lost response after commit");} }
         public void ensureCompany(){stage("company");} public void ensureProperty(){stage("property");}
         public void ensureAgreement(){stage("agreement");} public void verifyGraph(){stage("verify");graph=true;}
-        public void deliverAccess(){check(graph,"No credentials before graph verification");stage("access");access=true;}
+        public void ensureCustomerPortal(){check(graph,"Portal requires a verified graph");stage("portal");}
+        public void deliverAccess(){check(committed.contains("portal"),"No credentials before the portal");stage("access");access=true;}
     }
     public static void main(String[] args){
+        String portalUrl = CustomerPortalOnboarding.url("/core-cms/pages/{ORGANIZATION}/customer-portal", "PS_ORG_235");
+        check(portalUrl.equals("/core-cms/pages/PS_ORG_235/customer-portal"), "Resolve the inherited portal URL");
+        check(CustomerPortalOnboarding.pagePath(portalUrl, "PS_ORG_235").equals("/customer-portal"), "Store the tenant-local CMS path");
+        rejects(() -> CustomerPortalOnboarding.pagePath(portalUrl, "PS_ORG_23"), "Cannot bind another organization's path");
+        rejects(() -> CustomerPortalOnboarding.url("/core-cms/pages/PS_ORG_235/customer-portal", "PS_ORG_235"), "Missing placeholder refused");
+        rejects(() -> CustomerPortalOnboarding.url("/core-cms/pages/{ORGANIZATION}/../customer-portal", "PS_ORG_235"), "Traversal refused");
+        String changedDefault = "/core-cms/pages/{ORGANIZATION}/different";
+        check(CustomerPortalOnboarding.pinnedUrl("", "", changedDefault, "PS_ORG_235").endsWith("/different"), "First attempt uses the current default");
+        check(CustomerPortalOnboarding.pinnedUrl(portalUrl, "", changedDefault, "PS_ORG_235").equals(portalUrl), "Retry preserves the reserved URL after a default change");
+        rejects(() -> CustomerPortalOnboarding.pinnedUrl(portalUrl, "/core-cms/pages/PS_ORG_235/different", changedDefault, "PS_ORG_235"),
+                "Do not open a second path after a manual URL edit");
+        check(OnboardingTiming.billingWaitSeconds("submitPurchase") > OnboardingTiming.CMS_PREFLIGHT_SECONDS + 40, "Submission covers the portal check and two workflow transitions");
+        check(OnboardingTiming.billingWaitSeconds("provisionOnboarding") > 3 * OnboardingTiming.NATIVE_STAGE_SECONDS, "Provisioning covers RM create, RM verify, and CMS");
+        check(OnboardingTiming.CMS_SCRIPT_TIMEOUT_SECONDS > OnboardingTiming.BILLING_PROVISION_SECONDS
+                && OnboardingTiming.CMS_ACTIVATION_SECONDS > OnboardingTiming.CMS_SCRIPT_TIMEOUT_SECONDS
+                && OnboardingTiming.BILLING_SCRIPT_TIMEOUT_SECONDS > OnboardingTiming.CMS_ACTIVATION_SECONDS + 80,
+                "Wait budgets and script lifetimes are ordered");
         Map<String, Object> dates=m("SEASON_START","2026-11-01","SEASON_END","2027-03-31");
         Map<String, Object> oldSeason=m("key","seasonSettings","entity","Dictionary","fields",m("attributes",dates));
         Map<String, Object> newSeason=m("key","seasonSettings","entity","OrganizationMetadata","fields",m("metadata",new LinkedHashMap<>(dates)));
@@ -34,6 +52,11 @@ public final class OnboardingExecutionTest {
         Map<String, Object> newConfig=m("seasonSettingsContract",m("defaultSeason",new LinkedHashMap<>(fallback)),"organizationTypeCode","SERVICE_PROVIDER");
         Map<String, Object> oldPlan=m("source",m("orderId",235),"artifacts",List.of(oldSeason),"configuration",oldConfig);
         Map<String, Object> newPlan=m("source",m("orderId",235),"artifacts",List.of(newSeason),"configuration",newConfig);
+        Map<String, Object> operatorPlan=m("configuration",m("organizationTypeCode","OPERATOR"),"artifacts",
+                List.of(m("key","organization","type",m("code","OPERATOR"))));
+        check(OnboardingExecution.comparableSavedConfiguration(operatorPlan).equals(m("organizationTypeCode","SERVICE_PROVIDER")),
+                "Compare legacy OPERATOR configuration without rewriting its type");
+        check("OPERATOR".equals(map(operatorPlan.get("configuration")).get("organizationTypeCode")), "Keep the frozen organization type");
         check(OnboardingExecution.normalizeLegacySeason(oldPlan,newPlan).equals(newPlan),"Read old frozen receipts when only season storage changes");
         check(OnboardingExecution.comparableSavedConfiguration(oldPlan).equals(newConfig),"The write guard also accepts only the two removed legacy keys");
         check(map(oldConfig.get("seasonSettingsContract")).size()==3,"The saved configuration is not mutated");
@@ -54,11 +77,11 @@ public final class OnboardingExecutionTest {
             Port p=new Port();p.flags.put(gate,false);Map<String,Object> r=OnboardingExecution.run(p);
             check("BLOCKED".equals(r.get("status")),gate+" blocks");check(p.attempts.isEmpty(),gate+" forbids every mutation");
         }
-        for(String stage:List.of("company","property","agreement","verify","access")){
+        for(String stage:List.of("company","property","agreement","verify","portal","access")){
             Port p=new Port();p.fail=stage;rejects(()->OnboardingExecution.run(p),"Lost response must propagate");
             check("COMPLETE".equals(OnboardingExecution.run(p).get("status")),"Resume after lost "+stage);
-            check(p.committed.equals(List.of("company","property","agreement","verify","access")),"Each stage committed once after "+stage);
-            OnboardingExecution.run(p);check(p.committed.size()==5,"Completed replay must not duplicate stages");
+            check(p.committed.equals(List.of("company","property","agreement","verify","portal","access")),"Each stage committed once after "+stage);
+            OnboardingExecution.run(p);check(p.committed.size()==6,"Completed replay must not duplicate stages");
         }
         Port altered=new Port();altered.mutate="agreement";rejects(()->OnboardingExecution.run(altered),"Native conflict must stop flow");check(!altered.attempts.contains("access"),"Conflict prevents credential delivery");
         Map<String,Object> s=snapshot();String before=s.toString();List<Map<String,Object>> a=OnboardingExecution.allowances(s);

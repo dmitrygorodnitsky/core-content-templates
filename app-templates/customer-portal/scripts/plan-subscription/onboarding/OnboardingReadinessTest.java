@@ -112,6 +112,17 @@ public final class OnboardingReadinessTest {
         check(has(OnboardingReadiness.evaluate(purchase(), model, config()), "administrator", "ADMIN_ROLE_SCOPE_UNVERIFIED", "role"), "Another role with the same code is not interchangeable");
         model = model(); map(model.get("serviceOrderType")).put("owner", m("id", 999, "code", "OTHER_ROOT"));
         check(has(OnboardingReadiness.evaluate(purchase(), model, config()), "serviceOrder", "TYPE_ORGANIZATION_UNAVAILABLE", "type.owner"), "Service Order type must belong to the intended tenant branch");
+        model = model();
+        map(model.get("organizationType")).put("code", "SERVICE_PROVIDER");
+        map(model.get("organizationType")).put("owner", m("id", 62, "code", "WINTER_SERVICES"));
+        check(has(OnboardingReadiness.evaluate(purchase(), model, config()), "organization", "TYPE_ORGANIZATION_UNAVAILABLE", "type.owner"),
+                "Provider ownership outside the parent branch requires configuration");
+        model.put("providerTypeOwnerCode", "WINTER_SERVICES");
+        check(!has(OnboardingReadiness.evaluate(purchase(), model, config()), "organization", "TYPE_ORGANIZATION_UNAVAILABLE", "type.owner"),
+                "The configured shared Service Provider type can be used in the CA branch");
+        map(model.get("serviceOrderType")).put("owner", m("id", 62, "code", "WINTER_SERVICES"));
+        check(has(OnboardingReadiness.evaluate(purchase(), model, config()), "serviceOrder", "TYPE_ORGANIZATION_UNAVAILABLE", "type.owner"),
+                "The Service Provider owner setting does not broaden other type checks");
         model = model(); map(model.get("serviceOrderType")).put("workflow", m("initialState", "ACTIVE"));
         check(has(OnboardingReadiness.evaluate(purchase(), model, config()), "serviceOrder", "SERVICE_ORDER_DRAFT_CONFIGURATION_REQUIRED", "preparation"), "Do not activate an example service Order");
         model = model(); map(model.get("agreementType")).put("attributes", List.of(field("ORDERS", "com.pixelnation.bill.domain.Order", null, "entityTypes", List.of(999))));

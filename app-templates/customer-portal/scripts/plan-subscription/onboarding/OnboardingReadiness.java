@@ -176,7 +176,10 @@ public final class OnboardingReadiness {
             if (!Boolean.FALSE.equals(type.get("isAbstract"))) block(blockers, step, "CONCRETE_TYPE_REQUIRED", "type", "Тип должен быть конкретным, с проверенным isAbstract=false.");
             if (!present(map(type.get("workflow")).get("initialState"))) block(blockers, step, "INITIAL_WORKFLOW_STATE_REQUIRED", "workflow", "Не найдено начальное состояние типа.");
             Map<String, Object> owner = map(type.get("owner"));
-            if (!"SYSTEM".equals(owner.get("code")) && list(map(model.get("parent")).get("ancestryIds")).stream().noneMatch(id -> text(id).equals(text(owner.get("id"))))) {
+            boolean configuredProviderOwner = "organizationType".equals(key) && "SERVICE_PROVIDER".equals(type.get("code"))
+                    && present(owner.get("code")) && owner.get("code").equals(model.get("providerTypeOwnerCode"));
+            if (!configuredProviderOwner && !"SYSTEM".equals(owner.get("code"))
+                    && list(map(model.get("parent")).get("ancestryIds")).stream().noneMatch(id -> text(id).equals(text(owner.get("id"))))) {
                 block(blockers, step, "TYPE_ORGANIZATION_UNAVAILABLE", "type.owner", "Тип не принадлежит SYSTEM или ветке родительской CA-организации.");
             }
         }

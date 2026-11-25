@@ -195,6 +195,7 @@ public class MAIN_CLASS {
 
     private Map<String, Object> onboardingModelInSystem(String email) {
         Map<String, Object> config = onboardingConfig(), result = new LinkedHashMap<>();
+        result.put("providerTypeOwnerCode", text(executorConfig(), "providerTypeOwnerCode"));
         List<String> errors = new ArrayList<>();
         for (String[] selector : List.of(new String[]{"organizationType", "OrganizationType", "organizationTypeCode"},
                 new String[]{"customerType", "AccountType", "customerTypeCode"}, new String[]{"propertyType", "ResourceType", "propertyTypeCode"},
@@ -304,10 +305,12 @@ public class MAIN_CLASS {
         result.put("referenceScripts", references);
         Map<String, Object> quotePolicy = optionalMap(config.get("quoteLinkPolicy"));
         Map<String, Object> fingerprints = optionalMap(quotePolicy.get("implementationFingerprints"));
+        // Verified deployment fingerprints may change without changing the frozen expiry policy.
+        Map<String, Object> deployedFingerprints = optionalMap(executorConfig().get("quoteSourceFingerprints"));
         boolean quotePolicyVerified = "READY".equals(quotePolicy.get("implementationStatus"));
         for (String reference : List.of("quoteDelivery", "quoteConfirmation")) {
             Map<String, Object> implementation = optionalMap(references.get(reference));
-            Object expected = fingerprints.get(implementation.get("code"));
+            Object expected = deployedFingerprints.getOrDefault(implementation.get("code"), fingerprints.get(implementation.get("code")));
             quotePolicyVerified &= "AVAILABLE".equals(implementation.get("status")) && expected instanceof String
                     && expected.equals(implementation.get("sourceFingerprint"));
         }
@@ -1249,9 +1252,12 @@ public class MAIN_CLASS {
             Order order = readAccessOrder(source);
             Invoice invoice = preparedPurchaseInvoice(order);
             if (invoice == null) return Map.of("status", "NOT_PAYABLE", "orderState", stateOf(order));
-            return Map.of("status", "SUBMITTING", "orderId", order.getId(), "invoiceId", invoice.getId());
+            boolean checkPortal = invoice.hasState("DRAFT") && portalRequiredForInvoice(order);
+            return Map.of("status", "SUBMITTING", "orderId", order.getId(), "invoiceId", invoice.getId(),
+                    "checkPortal", checkPortal, "cmsHelper", checkPortal ? customerPortalPreflight(order) : "");
         });
         if (!"SUBMITTING".equals(plan.get("status"))) return plan;
+        if (Boolean.TRUE.equals(plan.get("checkPortal"))) requireCustomerPortalCms(text(plan, "cmsHelper"));
         advance(Order.class, plan.get("orderId"), "DRAFT", "DRAFT-ACCEPTED", "ACCEPTED");
         advance(Invoice.class, plan.get("invoiceId"), "DRAFT", "DRAFT-SENT", "SENT");
         return Map.of("status", "SUBMITTED", "orderId", plan.get("orderId"), "invoiceId", plan.get("invoiceId"));
@@ -1309,17 +1315,18 @@ public class MAIN_CLASS {
                             userManager.getSystemUser(), organizationManager.getByCode("SERVICEWAND"));
                 } catch (Exception failure) { throw new ApplicationException(failure); }
             });
-            long deadline = System.nanoTime() + java.time.Duration.ofMinutes(5).toNanos();
+            long deadline = System.nanoTime() + java.time.Duration.ofSeconds(OnboardingTiming.CMS_ACTIVATION_SECONDS).toNanos();
             while (System.nanoTime() < deadline) {
                 var info = transactionUtils.getInNewTx(() -> scriptService.getScriptExecutionInfo(job));
                 if (info != null && info.status() == ExecutionStatus.COMPLETED) {
                     Map<String, Object> result = Json.defaultMapper().readValue(info.result(), Map.class);
+                    if ("PROVISIONING_IN_PROGRESS".equals(result.get("status"))) return result;
                     return Map.of("status", String.valueOf(result.get("status")));
                 }
                 if (info != null && info.status() == ExecutionStatus.FAILED) return Map.of("status", "ACTIVATION_FAILED", "error", failureFrames(info.result()));
                 pause(1000);
             }
-            return Map.of("status", "ACTIVATION_TIMED_OUT");
+            return Map.of("status", "PROVISIONING_IN_PROGRESS", "executionId", job.toString());
         } catch (Exception failure) {
             return Map.of("status", "ACTIVATION_FAILED");
         }
@@ -1689,7 +1696,10 @@ public class MAIN_CLASS {
                 if (!Boolean.FALSE.equals(type.get("isAbstract"))) block(blockers, step, "CONCRETE_TYPE_REQUIRED", "type", "Тип должен быть конкретным, с проверенным isAbstract=false.");
                 if (!present(map(type.get("workflow")).get("initialState"))) block(blockers, step, "INITIAL_WORKFLOW_STATE_REQUIRED", "workflow", "Не найдено начальное состояние типа.");
                 Map<String, Object> owner = map(type.get("owner"));
-                if (!"SYSTEM".equals(owner.get("code")) && list(map(model.get("parent")).get("ancestryIds")).stream().noneMatch(id -> text(id).equals(text(owner.get("id"))))) {
+                boolean configuredProviderOwner = "organizationType".equals(key) && "SERVICE_PROVIDER".equals(type.get("code"))
+                        && present(owner.get("code")) && owner.get("code").equals(model.get("providerTypeOwnerCode"));
+                if (!configuredProviderOwner && !"SYSTEM".equals(owner.get("code"))
+                        && list(map(model.get("parent")).get("ancestryIds")).stream().noneMatch(id -> text(id).equals(text(owner.get("id"))))) {
                     block(blockers, step, "TYPE_ORGANIZATION_UNAVAILABLE", "type.owner", "Тип не принадлежит SYSTEM или ветке родительской CA-организации.");
                 }
             }
@@ -1775,6 +1785,7 @@ public class MAIN_CLASS {
             void ensureProperty();
             void ensureAgreement();
             void verifyGraph();
+            void ensureCustomerPortal();
             void deliverAccess();
         }
         @SuppressWarnings("unchecked")
@@ -1798,7 +1809,12 @@ public class MAIN_CLASS {
             return migrated;
         }
         static Map<String, Object> comparableSavedConfiguration(Map<String, Object> plan) {
-            Map<String, Object> configuration = map(plan.get("configuration"));
+            Map<String, Object> configuration = new LinkedHashMap<>(map(plan.get("configuration")));
+            // Keep previously confirmed OPERATOR receipts runnable with their original type and digest.
+            boolean oldOperator = "OPERATOR".equals(configuration.get("organizationTypeCode"))
+                    && list(plan.get("artifacts")).stream().map(OnboardingExecution::map)
+                        .anyMatch(row -> "organization".equals(row.get("key")) && "OPERATOR".equals(map(row.get("type")).get("code")));
+            if (oldOperator) configuration.put("organizationTypeCode", "SERVICE_PROVIDER");
             Map<String, Object> season = map(configuration.get("seasonSettingsContract"));
             if (!"Dictionary".equals(seasonArtifact(list(plan.get("artifacts"))).get("entity"))
                     || !"CONTRACT_SETTINGS".equals(season.get("organizationAttribute"))
@@ -1933,6 +1949,7 @@ public class MAIN_CLASS {
             // Every native stage obtains the purchase lock, rechecks payment/plan, verifies existing
             // records, and atomically commits that stage's records and receipt. A lost response is safe.
             port.ensureCompany(); port.ensureProperty(); port.ensureAgreement(); port.verifyGraph();
+            port.ensureCustomerPortal();
             port.deliverAccess();
             current = port.inspect();
             if (!yes(current, "graphVerified") || !yes(current, "accessDelivered")) throw new IllegalStateException("Onboarding did not reach verified completion");
@@ -2107,13 +2124,59 @@ public class MAIN_CLASS {
             }, true);
             onboardingResourceAction("verifyOnboardingProperty", request);
             tx(purchase -> { Map<String, Object> state = state(purchase); verifyCompany(purchase, state); verifyAgreement(purchase, state);
-                state.put("graphVerified", true); state.put("status", "ACCESS_PENDING"); saveOnboarding(purchase, state); return true;
+                if (!Boolean.TRUE.equals(state.get("graphVerified"))) {
+                    state.put("graphVerified", true);
+                    if (!"COMPLETE".equals(state.get("status"))) state.put("status", "ACCESS_PENDING");
+                    saveOnboarding(purchase, state);
+                }
+                return true;
             }, true);
+        }
+        public void ensureCustomerPortal() {
+            Map<String, Object> request = tx(purchase -> {
+                Map<String, Object> state = state(purchase), records = records(state);
+                // Completed purchases from before this feature are not backfilled by a retry.
+                if (!requiresCustomerPortal(state) || "COMPLETE".equals(state.get("status")) && !records.containsKey("customerPortal")) return Map.of();
+                if (!Boolean.TRUE.equals(state.get("graphVerified"))) throw new ApplicationException("Verified onboarding graph required before portal creation");
+                verifyCompany(purchase, state);
+                int organizationId = Math.toIntExact(number(records.get("organization")));
+                Organization target = entityManager.find(Organization.class, organizationId);
+                String pinned = text(state, "customerPortalUrl");
+                String url = prepareCustomerPortal(target, pinned);
+                if (pinned.isEmpty()) {
+                    state.put("customerPortalUrl", url);
+                    saveOnboarding(purchase, state);
+                }
+                Map<String, Object> payload = new LinkedHashMap<>(onboardingMarker(purchase, state));
+                payload.put("organizationId", organizationId);
+                payload.put("url", url);
+                if (records.containsKey("customerPortal")) payload.put("pageId", records.get("customerPortal"));
+                return payload;
+            }, true);
+            if (request.isEmpty()) return;
+            int pageId = Math.toIntExact(number(onboardingNodeAction("CORE-CMS", text(executorConfigForPortal(), "helperCode"),
+                    "ensureOnboardingCustomerPortal", request).get("id")));
+            tx(purchase -> {
+                Map<String, Object> state = state(purchase), records = records(state);
+                Object previous = records.get("customerPortal");
+                if (previous != null && number(previous) != pageId) throw new ApplicationException("Recorded onboarding portal changed");
+                if (previous == null) {
+                    records.put("customerPortal", pageId);
+                    state.put("records", records);
+                    saveOnboarding(purchase, state);
+                }
+                return true;
+            }, true);
+        }
+        private Map<String, Object> executorConfigForPortal() {
+            return tx(purchase -> executorConfig(), false);
         }
         public void deliverAccess() {
             Integer reset = tx(purchase -> {
                 Map<String, Object> state = state(purchase); verifyCompany(purchase, state); verifyAgreement(purchase, state);
                 if (!Boolean.TRUE.equals(state.get("graphVerified"))) throw new ApplicationException("Verified onboarding graph required before access delivery");
+                if (requiresCustomerPortal(state) && !"COMPLETE".equals(state.get("status"))
+                        && !records(state).containsKey("customerPortal")) throw new ApplicationException("Customer portal required before access delivery");
                 String status = String.valueOf(state.get("accessStatus"));
                 if ("DELIVERED".equals(status)) return null;
                 if (!"NOT_STARTED".equals(status)) throw new ApplicationException("Previous credential delivery requires operator reconciliation; automatic retry forbidden");
@@ -2183,6 +2246,58 @@ public class MAIN_CLASS {
             catch(RuntimeException recordingFailed){ /* The durable STARTED/DISPATCHING marker still forbids a second delivery. */ }
         }
     }
+    private boolean requiresCustomerPortal(Map<String, Object> state) {
+        return "SERVICE_PROVIDER".equals(objectMap(objectMap(state.get("plan")).get("configuration")).get("organizationTypeCode"));
+    }
+    private boolean portalRequiredForInvoice(Order order) {
+        Map<String, Object> state = optionalMap(order.getMetadata().get(ONBOARDING));
+        return state.isEmpty() ? "SERVICE_PROVIDER".equals(onboardingConfig().get("organizationTypeCode")) : requiresCustomerPortal(state);
+    }
+    private String customerPortalPreflight(Order order) {
+        String ownerCode = text(executorConfig(), "providerTypeOwnerCode");
+        var types = entityManager.createQuery(
+                "SELECT t FROM OrganizationType t WHERE t.code = 'SERVICE_PROVIDER' AND t.organization.code = :owner",
+                com.pixelnation.common.domain.OrganizationType.class).setParameter("owner", ownerCode).getResultList();
+        if (types.size() != 1 || !Boolean.FALSE.equals(types.getFirst().getIsAbstract())) {
+            throw new ApplicationException("Customer Portal preflight: configured Service Provider type is unavailable");
+        }
+        Object owner = customerHostingType(types.getFirst());
+        CustomerPortalOnboarding.url(customerPortalDefault(owner), "PS_ORG_" + order.getId());
+        return text(executorConfig(), "helperCode");
+    }
+    private void requireCustomerPortalCms(String helper) {
+        Map<String, Object> result = onboardingNodeAction("CORE-CMS", helper, "checkOnboardingCustomerPortal", Map.of());
+        if (!"READY".equals(result.get("status"))) {
+            throw new ApplicationException("Customer Portal preflight: " + text(result, "status"));
+        }
+    }
+    private Object customerHostingType(Object type) {
+        Object owner = onboardingAttributeOwner(type, "HOSTING_ENABLED", new LinkedHashSet<>());
+        Object urlOwner = onboardingAttributeOwner(type, "CUSTOMER_PORTAL", new LinkedHashSet<>());
+        if (owner == null || !"CMS_HOSTING".equals(property(owner, "code")) || !owner.equals(urlOwner)) {
+            throw new ApplicationException("Inherited CMS Hosting attributes are unavailable");
+        }
+        return owner;
+    }
+    private String customerPortalDefault(Object owner) {
+        Object field = collection(property(owner, "attributes")).stream()
+                .filter(attribute -> "CUSTOMER_PORTAL".equals(property(attribute, "code"))).findFirst().orElseThrow();
+        return java.util.Objects.toString(property(field, "defaultValue"), null);
+    }
+    private String prepareCustomerPortal(Organization target, String pinned) {
+        Object owner = customerHostingType(target.getType());
+        int ownerId = Math.toIntExact(number(property(owner, "id")));
+        String configured = target.getAttributeValue(ownerId, "CUSTOMER_PORTAL");
+        String current = CustomerPortalOnboarding.pinnedUrl(pinned, configured, customerPortalDefault(owner), target.getCode());
+        if (!Boolean.TRUE.equals(target.getAttributeValue(ownerId, "HOSTING_ENABLED"))
+                || !current.equals(configured)) {
+            target.setAttributeValue(ownerId, "HOSTING_ENABLED", true, null);
+            target.setAttributeValue(ownerId, "CUSTOMER_PORTAL", current, null);
+            organizationManager.save(target);
+            organizationManager.flush();
+        }
+        return current;
+    }
     private Map<String, Object> sourceProjection(Map<String, Object> source, Map<String, Object> frozen) {
         Map<String, Object> projected = new LinkedHashMap<>(); for (String key : frozen.keySet()) if (source.get(key) != null) projected.put(key, source.get(key)); return projected;
     }
@@ -2208,6 +2323,10 @@ public class MAIN_CLASS {
         if (!organizationManager.selectJPQL("SELECT o FROM Organization o WHERE o.code = :code", Map.of("code", code), Organization.class).isEmpty()) throw new ApplicationException("Unrecorded organization already exists; do not adopt automatically");
         Organization target = new Organization(); target.setCode(code); target.setParent(parent); target.setEnabled(true);
         var orgType = entityManager.find(com.pixelnation.common.domain.OrganizationType.class, Math.toIntExact(number(orgSpec.get("typeId"))));
+        if (requiresCustomerPortal(state) && (orgType == null || !"SERVICE_PROVIDER".equals(orgType.getCode())
+                || orgType.getOrganization() == null || !text(executorConfig(), "providerTypeOwnerCode").equals(orgType.getOrganization().getCode()))) {
+            throw new ApplicationException("Configured Service Provider type is unavailable");
+        }
         initializeOnboardingEntity(target, orgType, text(objectMap(plan.get("source")), "companyName"));
         setOnboardingAttributes(target, orgType, objectMap(orgSpec.get("attributes")), records);
         Map<String, Object> seasonSpec = artifact(state, "seasonSettings");
@@ -2495,26 +2614,32 @@ public class MAIN_CLASS {
             if (!String.valueOf(objectMap(artifact(state, "agreement").get("attributes")).get(field)).equals(String.valueOf((Object) document.findFirstAttributeValue(field)))) throw new ApplicationException("Starter agreement season changed");
         }
     }
-    @SuppressWarnings("unchecked")
     private Map<String, Object> onboardingResourceAction(String method, Map<String, Object> payload) {
+        return onboardingNodeAction("CORE-RM", "PLAN_SUBSCRIPTION_ONBOARDING_MODEL", method, payload);
+    }
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> onboardingNodeAction(String capability, String helper, String method, Map<String, Object> payload) {
         List<String> nodes = capabilitiesResolver.listNodesWithCapabilities().entrySet().stream()
-                .filter(entry -> entry.getValue().containsAll(Set.of("CORE", "CORE-RM"))).map(Map.Entry::getKey).sorted().toList();
-        if (nodes.isEmpty()) throw new ApplicationException("No onboarding Resource execution node");
+                .filter(entry -> entry.getValue().containsAll(Set.of("CORE", capability))).map(Map.Entry::getKey).sorted().toList();
+        if (nodes.isEmpty()) throw new ApplicationException("No onboarding execution node for " + capability);
         java.util.UUID job = transactionUtils.getInNewTxRW(() -> {
-            try { return scriptService.submitForExecution(nodes.getFirst(), scriptManager.getByCode("PLAN_SUBSCRIPTION_ONBOARDING_MODEL"), method,
-                    List.<Map<String, ?>>of(Map.of("payloadJson", json(payload))), Auth.getAuthenticatedUser(), organizationManager.getByCode("SYSTEM")); }
+            try { return scriptService.submitForExecution(nodes.getFirst(), scriptManager.getByCode(helper), method,
+                    payload.isEmpty() ? List.<Map<String, ?>>of() : List.<Map<String, ?>>of(Map.of("payloadJson", json(payload))),
+                    "CORE-CMS".equals(capability) ? userManager.getSystemUser() : Auth.getAuthenticatedUser(),
+                    organizationManager.getByCode("SYSTEM")); }
             catch (Exception failure) { throw new ApplicationException(failure); }
         });
-        long deadline = System.currentTimeMillis() + 90000;
-        while (System.currentTimeMillis() < deadline) {
+        int seconds = "checkOnboardingCustomerPortal".equals(method) ? OnboardingTiming.CMS_PREFLIGHT_SECONDS : OnboardingTiming.NATIVE_STAGE_SECONDS;
+        long deadline = System.nanoTime() + java.time.Duration.ofSeconds(seconds).toNanos();
+        while (System.nanoTime() < deadline) {
             var execution = transactionUtils.getInNewTx(() -> scriptService.getScriptExecutionInfo(job));
             if (execution != null && ExecutionStatus.COMPLETED.equals(execution.status())) {
-                try { return Json.defaultMapper().readValue(execution.result(), Map.class); } catch (Exception failure) { throw new ApplicationException("Invalid Resource onboarding response"); }
+                try { return Json.defaultMapper().readValue(execution.result(), Map.class); } catch (Exception failure) { throw new ApplicationException("Invalid onboarding response for " + method); }
             }
-            if (execution != null && ExecutionStatus.FAILED.equals(execution.status())) throw new ApplicationException("Resource onboarding failed; retry uses the recorded Property");
-            try { Thread.sleep(100); } catch (InterruptedException interrupted) { Thread.currentThread().interrupt(); throw new ApplicationException("Resource onboarding wait interrupted"); }
+            if (execution != null && ExecutionStatus.FAILED.equals(execution.status())) throw new ApplicationException("Onboarding " + method + " failed, execution " + job);
+            try { Thread.sleep(100); } catch (InterruptedException interrupted) { Thread.currentThread().interrupt(); throw new ApplicationException("Onboarding wait interrupted"); }
         }
-        throw new ApplicationException("Resource onboarding response timed out; retry is safe");
+        throw new ApplicationException("Onboarding " + method + " timed out, execution " + job);
     }
 
     private <T> T asOnboardingNative(Supplier<T> action) {
@@ -3174,4 +3299,63 @@ public class MAIN_CLASS {
         }
     }
     // END GENERATED PURCHASE LIFECYCLE
+
+    // BEGIN GENERATED ONBOARDING CUSTOMER PORTAL URL
+    private static final class CustomerPortalOnboarding {
+        static String pinnedUrl(String pinned, String configured, String defaultValue, String organizationCode) {
+            boolean hasConfiguredUrl = configured != null && !configured.isBlank() && !configured.contains("{ORGANIZATION}");
+            if (pinned != null && !pinned.isBlank()) {
+                pagePath(pinned, organizationCode);
+                if (hasConfiguredUrl && !pinned.equals(configured)) {
+                    throw new IllegalArgumentException("Organization portal URL differs from the reserved onboarding URL");
+                }
+                return pinned;
+            }
+            if (!hasConfiguredUrl) return url(defaultValue, organizationCode);
+            pagePath(configured, organizationCode);
+            return configured;
+        }
+
+        static String url(String defaultValue, String organizationCode) {
+            if (defaultValue == null || !defaultValue.contains("{ORGANIZATION}")) {
+                throw new IllegalArgumentException("Customer portal default must include {ORGANIZATION}");
+            }
+            String url = defaultValue.replace("{ORGANIZATION}", organizationCode);
+            pagePath(url, organizationCode);
+            return url;
+        }
+
+        static String pagePath(String url, String organizationCode) {
+            String prefix = "/core-cms/pages/" + organizationCode;
+            if (!organizationCode.matches("[A-Z][A-Z0-9_-]*") || !url.startsWith(prefix + "/")) {
+                throw new IllegalArgumentException("Customer portal URL must belong to its organization");
+            }
+            String path = url.substring(prefix.length());
+            if (!path.matches("(/[a-zA-Z0-9_-][a-zA-Z0-9._-]*)+")) {
+                throw new IllegalArgumentException("Invalid customer portal page path");
+            }
+            return path;
+        }
+    }
+    // END GENERATED ONBOARDING CUSTOMER PORTAL URL
+
+    // BEGIN GENERATED ONBOARDING TIMING
+    private static final class OnboardingTiming {
+        static final int CMS_PREFLIGHT_SECONDS = 30;
+        static final int NATIVE_STAGE_SECONDS = 90;
+        static final int BILLING_SUBMIT_SECONDS = 90;
+        static final int BILLING_PROVISION_SECONDS = 330;
+        static final int CMS_ACTIVATION_SECONDS = 360;
+        static final int CMS_SCRIPT_TIMEOUT_SECONDS = 345;
+        static final int BILLING_SCRIPT_TIMEOUT_SECONDS = 480;
+
+        static int billingWaitSeconds(String command) {
+            return switch (command) {
+                case "submitPurchase" -> BILLING_SUBMIT_SECONDS;
+                case "provisionOnboarding" -> BILLING_PROVISION_SECONDS;
+                default -> 45;
+            };
+        }
+    }
+    // END GENERATED ONBOARDING TIMING
 }

@@ -14,7 +14,7 @@
           "NAME": "Подписка: email, Checkout и черновик заказа"
         }
       },
-      "onUpdate": "this.workflowUtils.guardUpdate(entity, context);\n// utility source: 30a872ead77f",
+      "onUpdate": "this.workflowUtils.guardUpdate(entity, context);\n// utility source: 1f0ce7ca9abb",
       "states": [
         {
           "code": "SUBMITTED",
@@ -26,7 +26,7 @@
               "NAME": "Форма получена"
             }
           },
-          "onEnter": "this.workflowUtils.onSubmitted(entity, context);\n// utility source: 30a872ead77f"
+          "onEnter": "this.workflowUtils.onSubmitted(entity, context);\n// utility source: 1f0ce7ca9abb"
         },
         {
           "code": "AWAITING_EMAIL",
@@ -38,8 +38,8 @@
               "NAME": "Ожидает подтверждения email"
             }
           },
-          "onEnter": "this.workflowUtils.onAwaitingEmail(entity, context);\n// utility source: 30a872ead77f",
-          "onExit": "this.workflowUtils.onVerified(entity, context);\n// utility source: 30a872ead77f"
+          "onEnter": "this.workflowUtils.onAwaitingEmail(entity, context);\n// utility source: 1f0ce7ca9abb",
+          "onExit": "this.workflowUtils.onVerified(entity, context);\n// utility source: 1f0ce7ca9abb"
         },
         {
           "code": "EMAIL_VERIFIED_MODEL_PENDING",
@@ -51,8 +51,8 @@
               "NAME": "Email подтверждён; ожидается модель продуктов"
             }
           },
-          "onEnter": "this.workflowUtils.onEmailVerified(entity, context);\n// utility source: 30a872ead77f",
-          "onExit": "this.workflowUtils.onCheckoutPrepared(entity, context);\n// utility source: 30a872ead77f"
+          "onEnter": "this.workflowUtils.onEmailVerified(entity, context);\n// utility source: 1f0ce7ca9abb",
+          "onExit": "this.workflowUtils.onCheckoutPrepared(entity, context);\n// utility source: 1f0ce7ca9abb"
         },
         {
           "code": "PREPARATION_FAILED",
@@ -75,8 +75,8 @@
               "NAME": "Checkout подготовлен; ожидается подтверждение покупки"
             }
           },
-          "onEnter": "this.workflowUtils.onCheckoutEntered(entity, context);\n// utility source: 30a872ead77f",
-          "onExit": "this.workflowUtils.onPurchaseConfirmation(entity, context);\n// utility source: 30a872ead77f"
+          "onEnter": "this.workflowUtils.onCheckoutEntered(entity, context);\n// utility source: 1f0ce7ca9abb",
+          "onExit": "this.workflowUtils.onPurchaseConfirmation(entity, context);\n// utility source: 1f0ce7ca9abb"
         },
         {
           "code": "PURCHASE_CONFIRMATION_RECEIVED",
@@ -88,8 +88,8 @@
               "NAME": "Покупка подтверждена; подготовка черновика"
             }
           },
-          "onEnter": "this.workflowUtils.onPurchaseConfirmationReceived(entity, context);\n// utility source: 30a872ead77f",
-          "onExit": "this.workflowUtils.onDraftOrderReady(entity, context);\n// utility source: 30a872ead77f"
+          "onEnter": "this.workflowUtils.onPurchaseConfirmationReceived(entity, context);\n// utility source: 1f0ce7ca9abb",
+          "onExit": "this.workflowUtils.onDraftOrderReady(entity, context);\n// utility source: 1f0ce7ca9abb"
         },
         {
           "code": "DRAFT_ORDER_READY",
@@ -101,7 +101,7 @@
               "NAME": "Черновик заказа создан; ожидается модель расчёта"
             }
           },
-          "onEnter": "this.workflowUtils.onDraftOrderReady(entity, context);\n// utility source: 30a872ead77f"
+          "onEnter": "this.workflowUtils.onDraftOrderReady(entity, context);\n// utility source: 1f0ce7ca9abb"
         }
       ],
       "events": [

@@ -163,13 +163,59 @@
             }, true);
             onboardingResourceAction("verifyOnboardingProperty", request);
             tx(purchase -> { Map<String, Object> state = state(purchase); verifyCompany(purchase, state); verifyAgreement(purchase, state);
-                state.put("graphVerified", true); state.put("status", "ACCESS_PENDING"); saveOnboarding(purchase, state); return true;
+                if (!Boolean.TRUE.equals(state.get("graphVerified"))) {
+                    state.put("graphVerified", true);
+                    if (!"COMPLETE".equals(state.get("status"))) state.put("status", "ACCESS_PENDING");
+                    saveOnboarding(purchase, state);
+                }
+                return true;
             }, true);
+        }
+        public void ensureCustomerPortal() {
+            Map<String, Object> request = tx(purchase -> {
+                Map<String, Object> state = state(purchase), records = records(state);
+                // Completed purchases from before this feature are not backfilled by a retry.
+                if (!requiresCustomerPortal(state) || "COMPLETE".equals(state.get("status")) && !records.containsKey("customerPortal")) return Map.of();
+                if (!Boolean.TRUE.equals(state.get("graphVerified"))) throw new ApplicationException("Verified onboarding graph required before portal creation");
+                verifyCompany(purchase, state);
+                int organizationId = Math.toIntExact(number(records.get("organization")));
+                Organization target = entityManager.find(Organization.class, organizationId);
+                String pinned = text(state, "customerPortalUrl");
+                String url = prepareCustomerPortal(target, pinned);
+                if (pinned.isEmpty()) {
+                    state.put("customerPortalUrl", url);
+                    saveOnboarding(purchase, state);
+                }
+                Map<String, Object> payload = new LinkedHashMap<>(onboardingMarker(purchase, state));
+                payload.put("organizationId", organizationId);
+                payload.put("url", url);
+                if (records.containsKey("customerPortal")) payload.put("pageId", records.get("customerPortal"));
+                return payload;
+            }, true);
+            if (request.isEmpty()) return;
+            int pageId = Math.toIntExact(number(onboardingNodeAction("CORE-CMS", text(executorConfigForPortal(), "helperCode"),
+                    "ensureOnboardingCustomerPortal", request).get("id")));
+            tx(purchase -> {
+                Map<String, Object> state = state(purchase), records = records(state);
+                Object previous = records.get("customerPortal");
+                if (previous != null && number(previous) != pageId) throw new ApplicationException("Recorded onboarding portal changed");
+                if (previous == null) {
+                    records.put("customerPortal", pageId);
+                    state.put("records", records);
+                    saveOnboarding(purchase, state);
+                }
+                return true;
+            }, true);
+        }
+        private Map<String, Object> executorConfigForPortal() {
+            return tx(purchase -> executorConfig(), false);
         }
         public void deliverAccess() {
             Integer reset = tx(purchase -> {
                 Map<String, Object> state = state(purchase); verifyCompany(purchase, state); verifyAgreement(purchase, state);
                 if (!Boolean.TRUE.equals(state.get("graphVerified"))) throw new ApplicationException("Verified onboarding graph required before access delivery");
+                if (requiresCustomerPortal(state) && !"COMPLETE".equals(state.get("status"))
+                        && !records(state).containsKey("customerPortal")) throw new ApplicationException("Customer portal required before access delivery");
                 String status = String.valueOf(state.get("accessStatus"));
                 if ("DELIVERED".equals(status)) return null;
                 if (!"NOT_STARTED".equals(status)) throw new ApplicationException("Previous credential delivery requires operator reconciliation; automatic retry forbidden");
@@ -239,6 +285,58 @@
             catch(RuntimeException recordingFailed){ /* The durable STARTED/DISPATCHING marker still forbids a second delivery. */ }
         }
     }
+    private boolean requiresCustomerPortal(Map<String, Object> state) {
+        return "SERVICE_PROVIDER".equals(objectMap(objectMap(state.get("plan")).get("configuration")).get("organizationTypeCode"));
+    }
+    private boolean portalRequiredForInvoice(Order order) {
+        Map<String, Object> state = optionalMap(order.getMetadata().get(ONBOARDING));
+        return state.isEmpty() ? "SERVICE_PROVIDER".equals(onboardingConfig().get("organizationTypeCode")) : requiresCustomerPortal(state);
+    }
+    private String customerPortalPreflight(Order order) {
+        String ownerCode = text(executorConfig(), "providerTypeOwnerCode");
+        var types = entityManager.createQuery(
+                "SELECT t FROM OrganizationType t WHERE t.code = 'SERVICE_PROVIDER' AND t.organization.code = :owner",
+                com.pixelnation.common.domain.OrganizationType.class).setParameter("owner", ownerCode).getResultList();
+        if (types.size() != 1 || !Boolean.FALSE.equals(types.getFirst().getIsAbstract())) {
+            throw new ApplicationException("Customer Portal preflight: configured Service Provider type is unavailable");
+        }
+        Object owner = customerHostingType(types.getFirst());
+        CustomerPortalOnboarding.url(customerPortalDefault(owner), "PS_ORG_" + order.getId());
+        return text(executorConfig(), "helperCode");
+    }
+    private void requireCustomerPortalCms(String helper) {
+        Map<String, Object> result = onboardingNodeAction("CORE-CMS", helper, "checkOnboardingCustomerPortal", Map.of());
+        if (!"READY".equals(result.get("status"))) {
+            throw new ApplicationException("Customer Portal preflight: " + text(result, "status"));
+        }
+    }
+    private Object customerHostingType(Object type) {
+        Object owner = onboardingAttributeOwner(type, "HOSTING_ENABLED", new LinkedHashSet<>());
+        Object urlOwner = onboardingAttributeOwner(type, "CUSTOMER_PORTAL", new LinkedHashSet<>());
+        if (owner == null || !"CMS_HOSTING".equals(property(owner, "code")) || !owner.equals(urlOwner)) {
+            throw new ApplicationException("Inherited CMS Hosting attributes are unavailable");
+        }
+        return owner;
+    }
+    private String customerPortalDefault(Object owner) {
+        Object field = collection(property(owner, "attributes")).stream()
+                .filter(attribute -> "CUSTOMER_PORTAL".equals(property(attribute, "code"))).findFirst().orElseThrow();
+        return java.util.Objects.toString(property(field, "defaultValue"), null);
+    }
+    private String prepareCustomerPortal(Organization target, String pinned) {
+        Object owner = customerHostingType(target.getType());
+        int ownerId = Math.toIntExact(number(property(owner, "id")));
+        String configured = target.getAttributeValue(ownerId, "CUSTOMER_PORTAL");
+        String current = CustomerPortalOnboarding.pinnedUrl(pinned, configured, customerPortalDefault(owner), target.getCode());
+        if (!Boolean.TRUE.equals(target.getAttributeValue(ownerId, "HOSTING_ENABLED"))
+                || !current.equals(configured)) {
+            target.setAttributeValue(ownerId, "HOSTING_ENABLED", true, null);
+            target.setAttributeValue(ownerId, "CUSTOMER_PORTAL", current, null);
+            organizationManager.save(target);
+            organizationManager.flush();
+        }
+        return current;
+    }
     private Map<String, Object> sourceProjection(Map<String, Object> source, Map<String, Object> frozen) {
         Map<String, Object> projected = new LinkedHashMap<>(); for (String key : frozen.keySet()) if (source.get(key) != null) projected.put(key, source.get(key)); return projected;
     }
@@ -264,6 +362,10 @@
         if (!organizationManager.selectJPQL("SELECT o FROM Organization o WHERE o.code = :code", Map.of("code", code), Organization.class).isEmpty()) throw new ApplicationException("Unrecorded organization already exists; do not adopt automatically");
         Organization target = new Organization(); target.setCode(code); target.setParent(parent); target.setEnabled(true);
         var orgType = entityManager.find(com.pixelnation.common.domain.OrganizationType.class, Math.toIntExact(number(orgSpec.get("typeId"))));
+        if (requiresCustomerPortal(state) && (orgType == null || !"SERVICE_PROVIDER".equals(orgType.getCode())
+                || orgType.getOrganization() == null || !text(executorConfig(), "providerTypeOwnerCode").equals(orgType.getOrganization().getCode()))) {
+            throw new ApplicationException("Configured Service Provider type is unavailable");
+        }
         initializeOnboardingEntity(target, orgType, text(objectMap(plan.get("source")), "companyName"));
         setOnboardingAttributes(target, orgType, objectMap(orgSpec.get("attributes")), records);
         Map<String, Object> seasonSpec = artifact(state, "seasonSettings");
@@ -551,26 +653,32 @@
             if (!String.valueOf(objectMap(artifact(state, "agreement").get("attributes")).get(field)).equals(String.valueOf((Object) document.findFirstAttributeValue(field)))) throw new ApplicationException("Starter agreement season changed");
         }
     }
-    @SuppressWarnings("unchecked")
     private Map<String, Object> onboardingResourceAction(String method, Map<String, Object> payload) {
+        return onboardingNodeAction("CORE-RM", "PLAN_SUBSCRIPTION_ONBOARDING_MODEL", method, payload);
+    }
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> onboardingNodeAction(String capability, String helper, String method, Map<String, Object> payload) {
         List<String> nodes = capabilitiesResolver.listNodesWithCapabilities().entrySet().stream()
-                .filter(entry -> entry.getValue().containsAll(Set.of("CORE", "CORE-RM"))).map(Map.Entry::getKey).sorted().toList();
-        if (nodes.isEmpty()) throw new ApplicationException("No onboarding Resource execution node");
+                .filter(entry -> entry.getValue().containsAll(Set.of("CORE", capability))).map(Map.Entry::getKey).sorted().toList();
+        if (nodes.isEmpty()) throw new ApplicationException("No onboarding execution node for " + capability);
         java.util.UUID job = transactionUtils.getInNewTxRW(() -> {
-            try { return scriptService.submitForExecution(nodes.getFirst(), scriptManager.getByCode("PLAN_SUBSCRIPTION_ONBOARDING_MODEL"), method,
-                    List.<Map<String, ?>>of(Map.of("payloadJson", json(payload))), Auth.getAuthenticatedUser(), organizationManager.getByCode("SYSTEM")); }
+            try { return scriptService.submitForExecution(nodes.getFirst(), scriptManager.getByCode(helper), method,
+                    payload.isEmpty() ? List.<Map<String, ?>>of() : List.<Map<String, ?>>of(Map.of("payloadJson", json(payload))),
+                    "CORE-CMS".equals(capability) ? userManager.getSystemUser() : Auth.getAuthenticatedUser(),
+                    organizationManager.getByCode("SYSTEM")); }
             catch (Exception failure) { throw new ApplicationException(failure); }
         });
-        long deadline = System.currentTimeMillis() + 90000;
-        while (System.currentTimeMillis() < deadline) {
+        int seconds = "checkOnboardingCustomerPortal".equals(method) ? OnboardingTiming.CMS_PREFLIGHT_SECONDS : OnboardingTiming.NATIVE_STAGE_SECONDS;
+        long deadline = System.nanoTime() + java.time.Duration.ofSeconds(seconds).toNanos();
+        while (System.nanoTime() < deadline) {
             var execution = transactionUtils.getInNewTx(() -> scriptService.getScriptExecutionInfo(job));
             if (execution != null && ExecutionStatus.COMPLETED.equals(execution.status())) {
-                try { return Json.defaultMapper().readValue(execution.result(), Map.class); } catch (Exception failure) { throw new ApplicationException("Invalid Resource onboarding response"); }
+                try { return Json.defaultMapper().readValue(execution.result(), Map.class); } catch (Exception failure) { throw new ApplicationException("Invalid onboarding response for " + method); }
             }
-            if (execution != null && ExecutionStatus.FAILED.equals(execution.status())) throw new ApplicationException("Resource onboarding failed; retry uses the recorded Property");
-            try { Thread.sleep(100); } catch (InterruptedException interrupted) { Thread.currentThread().interrupt(); throw new ApplicationException("Resource onboarding wait interrupted"); }
+            if (execution != null && ExecutionStatus.FAILED.equals(execution.status())) throw new ApplicationException("Onboarding " + method + " failed, execution " + job);
+            try { Thread.sleep(100); } catch (InterruptedException interrupted) { Thread.currentThread().interrupt(); throw new ApplicationException("Onboarding wait interrupted"); }
         }
-        throw new ApplicationException("Resource onboarding response timed out; retry is safe");
+        throw new ApplicationException("Onboarding " + method + " timed out, execution " + job);
     }
 
     private <T> T asOnboardingNative(Supplier<T> action) {

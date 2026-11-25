@@ -87,6 +87,31 @@ export async function exportLivePortalManual(options = {}) {
   return { outputDir, manifest };
 }
 
+export async function buildSubscriptionPortalTemplate(javascript) {
+  assertLiveBundle(javascript);
+  const unconfiguredOrganization = "UNCONFIGURED_PORTAL_ORGANIZATION";
+  const source = {
+    template: { code: "CUSTOMER_PORTAL_SUBSCRIPTION", title: "Customer Portal" },
+    runtime: {
+      vertical: "snow", theme: "snow", profile: "stormRetail", routerMode: "hash",
+      defaultRoute: "profile", enabledModules: ["profile"], authMode: "required", dataMode: "live", errorMode: "error",
+    },
+    account: {
+      organization: unconfiguredOrganization, accountTypeCode: "CUSTOMER",
+      coreApiBase: "/core", accountApiBase: "/core-acct",
+    },
+    auth: { coreBase: "/core", ...coreOidcCallback },
+  };
+  const template = templateFor(source, null, await readStyles(), javascript);
+  assertLiveTemplate(template);
+  template.html = template.html.replace('data-portal-organization="' + unconfiguredOrganization + '"',
+    'data-portal-organization="' + parameterMarker("PORTAL_ORGANIZATION") + '"');
+  template.parameters.push(parameter("PORTAL_ORGANIZATION", unconfiguredOrganization,
+    "Organization code set by subscription onboarding in this page context."));
+  assertJteSafeTemplate(template);
+  return template;
+}
+
 async function validateSource(source) {
   assertKnownKeys(source, sourceKeys, "Live portal source");
   if (source.schemaVersion !== 1) throw new Error("Live portal source schemaVersion must be 1");

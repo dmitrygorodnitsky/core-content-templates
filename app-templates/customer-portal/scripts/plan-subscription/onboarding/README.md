@@ -378,6 +378,51 @@ unchanged. New admin assignments target only the new CA organization. A per-User
 lock plus persisted delivery intents across purchase Orders prevents concurrent
 purchases from independently resetting the same User. An uncertain credential or
 ready-mail outcome requires reconciliation; no automatic second reset/send.
+For new SERVICE_PROVIDER organizations, the final provisioning step reads
+`CUSTOMER_PORTAL` from the inherited `CMS_HOSTING` type. It expands the default
+`/core-cms/pages/{ORGANIZATION}/customer-portal` and saves it with
+`HOSTING_ENABLED=true`. CMS creates the tenant's `/customer-portal` page from
+the SYSTEM-owned `CUSTOMER_PORTAL_SUBSCRIPTION` template. The page uses the
+existing sign-in and customer profile with the new organization bound in the
+page parameters. It is excluded from SEO.
+
+The CMS step locks the organization during lookup and creation. A retry reuses
+the same tenant, path and template binding. Billing saves `customerPortalUrl`
+on the purchase receipt before queuing CMS, then records the page ID before
+credential delivery. A changed organization URL or a page under a different path
+requires reconciliation. Previously completed purchases and frozen OPERATOR
+purchases keep their original scope.
+
+For a new Service Provider subscription, `submitPurchase` validates the
+inherited URL and asks CMS to verify the shared template and its tenant binding
+before it advances the Order and Invoice. If the check fails, the Invoice stays
+DRAFT and the purchase link cannot be issued for that draft. Retry submission
+once CMS is ready.
+
+The read-only CMS check has 30 seconds. Each remote provisioning stage has
+90 seconds. The CMS workflow allows 330 seconds for Billing provisioning, and
+the paid completion job allows 360 seconds for the outer CMS activation.
+The native timeouts for the workflow and Billing scripts are 345 and 480
+seconds. A pending activation returns `PROVISIONING_IN_PROGRESS` with the
+execution ID so an operator can inspect the same job.
+
+On dev-1, `providerTypeOwnerCode` points to the `WINTER_SERVICES` owner of the
+Service Provider type. The new organization still goes under
+`SERVICE_WAND_WINTER_SERVICES_CANADA`, where its other types and the default
+communication settings are available.
+
+Build the shared CMS block with `buildSubscriptionPortalTemplate` from
+`../../export-live-portal-manual.mjs`, using the bundle produced by
+`../../build-live-portal-runtime.mjs`. The CMS executor can save only as the
+system user. It uses the page-write permission in the verified organization's
+scope for the save, without changing persisted roles.
+
+The dev-1 readiness check still references the two versioned Quote issuers.
+`quoteSourceFingerprints` records their verified deployed sources outside the
+frozen purchase configuration. Both deployed expiry methods pass the same
+boundary cases as the consolidated source. A new source mismatch still blocks
+readiness.
+
 The ready login URL is read from `executor-config.json`, independently of the
 purchase digest, so it can change without rewriting logic or re-consenting prices.
 

@@ -12,6 +12,7 @@ public final class OnboardingExecution {
         void ensureProperty();
         void ensureAgreement();
         void verifyGraph();
+        void ensureCustomerPortal();
         void deliverAccess();
     }
     @SuppressWarnings("unchecked")
@@ -35,7 +36,12 @@ public final class OnboardingExecution {
         return migrated;
     }
     static Map<String, Object> comparableSavedConfiguration(Map<String, Object> plan) {
-        Map<String, Object> configuration = map(plan.get("configuration"));
+        Map<String, Object> configuration = new LinkedHashMap<>(map(plan.get("configuration")));
+        // Keep previously confirmed OPERATOR receipts runnable with their original type and digest.
+        boolean oldOperator = "OPERATOR".equals(configuration.get("organizationTypeCode"))
+                && list(plan.get("artifacts")).stream().map(OnboardingExecution::map)
+                    .anyMatch(row -> "organization".equals(row.get("key")) && "OPERATOR".equals(map(row.get("type")).get("code")));
+        if (oldOperator) configuration.put("organizationTypeCode", "SERVICE_PROVIDER");
         Map<String, Object> season = map(configuration.get("seasonSettingsContract"));
         if (!"Dictionary".equals(seasonArtifact(list(plan.get("artifacts"))).get("entity"))
                 || !"CONTRACT_SETTINGS".equals(season.get("organizationAttribute"))
@@ -170,6 +176,7 @@ public final class OnboardingExecution {
         // Every native stage obtains the purchase lock, rechecks payment/plan, verifies existing
         // records, and atomically commits that stage's records and receipt. A lost response is safe.
         port.ensureCompany(); port.ensureProperty(); port.ensureAgreement(); port.verifyGraph();
+        port.ensureCustomerPortal();
         port.deliverAccess();
         current = port.inspect();
         if (!yes(current, "graphVerified") || !yes(current, "accessDelivered")) throw new IllegalStateException("Onboarding did not reach verified completion");
