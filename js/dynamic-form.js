@@ -33,6 +33,7 @@ class DynamicForm {
    * @param {string}  config.lang
    * @param {string}  config.formTypeCode
    * @param {number}  config.organizationId
+   * @param {boolean} [config.anonymousSubmit] Submit without browser credentials for public forms.
    * @param {string}  [config.submitLabel]
    * @param {string}  [config.prevLabel]
    * @param {string}  [config.nextLabel]
@@ -1784,6 +1785,7 @@ class DynamicForm {
 
     const res = await fetch(url, {
       method: "POST",
+      ...(this.cfg.anonymousSubmit ? { credentials: "omit" } : {}),
       headers: { "Content-Type": "application/json", accept: "application/json" },
       body: JSON.stringify({
         type: { id: this._schema.id },
